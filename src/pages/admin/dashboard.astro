@@ -1,0 +1,602 @@
+---
+// src/pages/admin/dashboard.astro
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Dashboard Admin - High Vision">
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <!-- Header -->
+    <div class="bg-white shadow-lg border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-6">
+          <div class="flex items-center space-x-4">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-3 rounded-xl shadow-lg">
+              <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
+              <p class="text-sm text-gray-500 mt-1">Gestione completa del sistema High Vision</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <!-- Navigation Menu -->
+            <nav class="admin-nav hidden md:flex items-center space-x-6 mr-8">
+              <a href="/" class="text-gray-600 hover:text-blue-600 transition-colors">
+                🏠 Home
+              </a>
+              <a href="/admin/products" class="text-gray-600 hover:text-blue-600 transition-colors">
+                📦 Prodotti
+              </a>
+              <a href="/admin/subcategories" class="text-gray-600 hover:text-blue-600 transition-colors">
+                🏷️ Sottocategorie
+              </a>
+              <a href="/admin/contacts" class="text-gray-600 hover:text-blue-600 transition-colors">
+                📧 Contatti
+              </a>
+              
+            </nav>
+            
+            <!-- User Info -->
+            <div class="text-right">
+              <p class="text-sm font-medium text-gray-900" id="welcome-user">Benvenuto, Admin</p>
+              <p class="text-xs text-gray-500" id="current-time">Caricamento...</p>
+            </div>
+            
+            <!-- Status & Logout -->
+            <div class="flex items-center space-x-3">
+              <div class="bg-green-100 p-2 rounded-lg">
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              </div>
+              
+              <!-- Logout Button -->
+              <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium">
+                🚪 Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      
+      <!-- Loading State -->
+      <div id="loading-state" class="flex justify-center items-center py-20">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p class="text-gray-600 mt-4">Caricamento dashboard...</p>
+        </div>
+      </div>
+
+      <!-- Dashboard Content -->
+      <div id="dashboard-content" class="hidden space-y-8">
+        
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Total Products -->
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <div class="flex items-center">
+              <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 rounded-xl shadow-lg">
+                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                  </div>
+              <div class="ml-5 flex-1">
+                <p class="text-sm font-medium text-gray-600">Prodotti Totali</p>
+                <div class="flex items-baseline">
+                  <p class="text-3xl font-bold text-gray-900" id="total-products">-</p>
+                  <p class="ml-2 text-sm font-medium text-green-600" id="products-growth">+12%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Products -->
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <div class="flex items-center">
+              <div class="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-xl shadow-lg">
+                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+              <div class="ml-5 flex-1">
+                <p class="text-sm font-medium text-gray-600">Prodotti Attivi</p>
+                <div class="flex items-baseline">
+                  <p class="text-3xl font-bold text-gray-900" id="active-products">-</p>
+                  <p class="ml-2 text-sm font-medium text-blue-600" id="active-percentage">0%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Contacts -->
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <div class="flex items-center">
+              <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-xl shadow-lg">
+                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-6a2 2 0 012-2h8V8z" />
+                    </svg>
+                  </div>
+              <div class="ml-5 flex-1">
+                <p class="text-sm font-medium text-gray-600">Contatti Totali</p>
+                <div class="flex items-baseline">
+                  <p class="text-3xl font-bold text-gray-900" id="total-contacts">-</p>
+                  <p class="ml-2 text-sm font-medium text-green-600" id="contacts-growth">+8%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- New Contacts Today -->
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <div class="flex items-center">
+              <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-xl shadow-lg">
+                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </div>
+              <div class="ml-5 flex-1">
+                <p class="text-sm font-medium text-gray-600">Nuovi Oggi</p>
+                <div class="flex items-baseline">
+                  <p class="text-3xl font-bold text-gray-900" id="today-contacts">-</p>
+                  <p class="ml-2 text-sm font-medium text-gray-500">oggi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Top Products Chart -->
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-lg font-semibold text-gray-900">Prodotti Più Visti</h3>
+              <div class="bg-blue-50 p-2 rounded-lg">
+                <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+            </div>
+            <div id="top-products-list" class="space-y-4">
+              <!-- Dynamic content -->
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-lg font-semibold text-gray-900">Attività Recente</h3>
+              <div class="bg-green-50 p-2 rounded-lg">
+                <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div id="recent-activity" class="space-y-4">
+              <!-- Dynamic content -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Contact Status Distribution -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">Distribuzione Contatti per Status</h3>
+            <div class="bg-purple-50 p-2 rounded-lg">
+              <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+          </div>
+          <div id="contact-status-chart" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            <!-- Dynamic content -->
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+          <h3 class="text-lg font-semibold text-gray-900 mb-6">Azioni Rapide</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <a href="/admin/products/edit" class="group bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 p-6 rounded-xl transition-all duration-300 border border-blue-200">
+              <div class="flex items-center space-x-4">
+                <div class="bg-blue-600 group-hover:bg-blue-700 p-3 rounded-lg transition-colors">
+                  <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Nuovo Prodotto</p>
+                  <p class="text-sm text-gray-600">Aggiungi al catalogo</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="/admin/products" class="group bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 p-6 rounded-xl transition-all duration-300 border border-green-200">
+              <div class="flex items-center space-x-4">
+                <div class="bg-green-600 group-hover:bg-green-700 p-3 rounded-lg transition-colors">
+                  <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Gestione Prodotti</p>
+                  <p class="text-sm text-gray-600">Visualizza e modifica</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="/admin/subcategories" class="group bg-gradient-to-r from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200 p-6 rounded-xl transition-all duration-300 border border-yellow-200">
+              <div class="flex items-center space-x-4">
+                <div class="bg-yellow-600 group-hover:bg-yellow-700 p-3 rounded-lg transition-colors">
+                  <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Sottocategorie</p>
+                  <p class="text-sm text-gray-600">Gestisci e organizza</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="/admin/contacts" class="group bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 p-6 rounded-xl transition-all duration-300 border border-purple-200">
+              <div class="flex items-center space-x-4">
+                <div class="bg-purple-600 group-hover:bg-purple-700 p-3 rounded-lg transition-colors">
+                  <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-6a2 2 0 012-2h8V8z" />
+              </svg>
+          </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Visualizza Contatti</p>
+                  <p class="text-sm text-gray-600">Gestisci richieste</p>
+        </div>
+      </div>
+            </a>
+
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+
+    // Update time
+    function updateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleString('it-IT', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      const timeEl = document.getElementById('current-time');
+      if (timeEl) timeEl.textContent = timeString;
+    }
+
+    // Load dashboard data
+    async function loadDashboardStats() {
+      try {
+        const response = await fetch(`${API_BASE}/admin/dashboard/stats`, {
+          credentials: 'include'
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          const data = result.data;
+          
+          // Update metrics
+          document.getElementById('total-products')!.textContent = data.products.total.toString();
+          document.getElementById('active-products')!.textContent = data.products.active.toString();
+          document.getElementById('total-contacts')!.textContent = data.contacts.total.toString();
+          document.getElementById('today-contacts')!.textContent = data.contacts.today.toString();
+          
+          // Calculate active percentage
+          const activePercentage = data.products.total > 0 
+            ? Math.round((data.products.active / data.products.total) * 100)
+            : 0;
+          document.getElementById('active-percentage')!.textContent = `${activePercentage}%`;
+
+          // Populate top products
+          populateTopProducts(data.topProducts);
+          
+          // Populate recent activity
+          populateRecentActivity(data.recentProducts);
+          
+          // Populate contact status chart
+          populateContactStatusChart(data.contacts.byStatus);
+
+          console.log('✅ Dashboard loaded successfully');
+        }
+      } catch (error: unknown) {
+        console.error('❌ Error loading dashboard:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        showError(`Errore nel caricamento della dashboard: ${errorMessage}`);
+      }
+    }
+
+    function populateTopProducts(products: any[]) {
+      const container = document.getElementById('top-products-list')!;
+      
+      if (!products || products.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 text-center py-4">Nessun prodotto trovato</p>';
+        return;
+      }
+
+      container.innerHTML = products.map((product, index) => `
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+              ${index + 1}
+            </div>
+            <div>
+              <p class="font-medium text-gray-900">${product.name}</p>
+              <p class="text-sm text-gray-500">${product.category_name || 'Categoria non specificata'}</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-semibold text-gray-900">${product.views || 0}</p>
+            <p class="text-xs text-gray-500">visualizzazioni</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function populateRecentActivity(products: any[]) {
+      const container = document.getElementById('recent-activity')!;
+      
+      if (!products || products.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 text-center py-4">Nessuna attività recente</p>';
+        return;
+      }
+
+      container.innerHTML = products.map(product => {
+        const date = new Date(product.created_at).toLocaleDateString('it-IT');
+        const statusColor = product.status === 'active' ? 'green' : product.status === 'draft' ? 'yellow' : 'gray';
+        
+        return `
+          <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+            <div class="w-3 h-3 bg-${statusColor}-500 rounded-full"></div>
+            <div class="flex-1">
+              <p class="font-medium text-gray-900">${product.name}</p>
+              <p class="text-sm text-gray-500">${product.category_name || 'Categoria non specificata'} • ${date}</p>
+            </div>
+            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-${statusColor}-100 text-${statusColor}-800">
+              ${product.status}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function populateContactStatusChart(statusData: any[]) {
+      const container = document.getElementById('contact-status-chart')!;
+      
+      if (!statusData || statusData.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 text-center py-4 col-span-full">Nessun dato disponibile</p>';
+        return;
+      }
+
+      const statusColors: Record<string, string> = {
+        'new': 'blue',
+        'contacted': 'yellow',
+        'qualified': 'green',
+        'proposal': 'purple',
+        'converted': 'emerald',
+        'lost': 'red',
+        'archived': 'gray'
+      };
+
+      const statusLabels: Record<string, string> = {
+        'new': 'Nuovi',
+        'contacted': 'Contattati',
+        'qualified': 'Qualificati',
+        'proposal': 'Proposta',
+        'converted': 'Convertiti',
+        'lost': 'Persi',
+        'archived': 'Archiviati'
+      };
+
+      container.innerHTML = statusData.map(item => {
+        const color = statusColors[item.status] || 'gray';
+        const label = statusLabels[item.status] || item.status;
+        
+        return `
+          <div class="text-center p-4 bg-${color}-50 rounded-xl border border-${color}-200">
+            <div class="text-2xl font-bold text-${color}-600">${item.count}</div>
+            <div class="text-sm text-${color}-700 font-medium">${label}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showError(message: string) {
+      const container = document.getElementById('dashboard-content');
+      if (container) {
+        container.innerHTML = `
+          <div class="text-center py-12">
+            <div class="text-red-500 text-xl mb-4">⚠️ Errore</div>
+            <p class="text-gray-600">${message}</p>
+            <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+              Riprova
+            </button>
+          </div>
+        `;
+        container.classList.remove('hidden');
+      }
+    }
+
+    // Logout function
+    async function logout() {
+      try {
+        const response = await fetch(`${API_BASE}/auth/logout`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+        
+        if (response.ok) {
+          console.log('✅ Logout successful');
+          window.location.href = '/admin/login';
+        } else {
+          console.error('❌ Logout failed');
+          alert('Errore durante il logout');
+        }
+      } catch (error: unknown) {
+        console.error('❌ Logout error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        alert(`Errore durante il logout: ${errorMessage}`);
+      }
+    }
+
+    // RIMUOVI FISICAMENTE LA NAVBAR DEL FRONTEND
+    function removeMainNavbar() {
+      // Seleziona tutti i possibili elementi navbar
+      const navSelectors = [
+        'body > nav',
+        'body > header nav',
+        'nav:not(.admin-nav)',
+        '[data-navbar]',
+        '.navbar:not(.admin-nav)'
+      ];
+      
+      navSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+          if (!el.classList.contains('admin-nav')) {
+            // console.log('🗑️ Removing navbar element:', el);
+            el.remove();
+          }
+        });
+      });
+    }
+
+    // INTERCETTA TUTTI GLI EVENTI DI NAVIGAZIONE
+    function setupNavbarRemoval() {
+      // Rimuovi navbar periodicamente
+      const intervalId = setInterval(removeMainNavbar, 1000);
+      
+      // Eventi di navigazione browser
+      window.addEventListener('pageshow', removeMainNavbar);
+      window.addEventListener('popstate', removeMainNavbar);
+      window.addEventListener('hashchange', removeMainNavbar);
+      window.addEventListener('beforeunload', () => clearInterval(intervalId));
+      
+      // Observer per cambiamenti DOM
+      const observer = new MutationObserver(() => {
+        removeMainNavbar();
+      });
+      
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Rimuovi navbar immediatamente
+      removeMainNavbar();
+      
+      // Rimuovi navbar dopo un piccolo delay per sicurezza
+      setTimeout(removeMainNavbar, 100);
+      setTimeout(removeMainNavbar, 500);
+      setTimeout(removeMainNavbar, 1000);
+      
+      // Setup rimozione navbar persistente
+      setupNavbarRemoval();
+      
+      updateTime();
+      setInterval(updateTime, 60000); // Update every minute
+
+      // Setup logout button
+      document.getElementById('logout-btn')!.addEventListener('click', () => {
+        if (confirm('Sei sicuro di voler uscire?')) {
+          logout();
+        }
+      });
+
+      try {
+        await loadDashboardStats();
+        
+        document.getElementById('loading-state')!.classList.add('hidden');
+        document.getElementById('dashboard-content')!.classList.remove('hidden');
+        
+      } catch (error) {
+        console.error('Dashboard initialization failed:', error);
+        document.getElementById('loading-state')!.classList.add('hidden');
+        showError('Impossibile caricare la dashboard');
+      }
+    });
+  </script>
+
+  <style>
+    /* NASCONDE SPECIFICATAMENTE IL COMPONENTE NAVBAR DI ASTRO */
+    body > * > nav,
+    body nav:first-child,
+    nav:not(.admin-nav),
+    header nav,
+    .navbar,
+    [data-navbar],
+    [class*="nav"]:not(.admin-nav),
+    [class*="Nav"]:not(.admin-nav),
+    [class*="menu"],
+    [class*="Menu"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      position: absolute !important;
+      left: -99999px !important;
+      top: -99999px !important;
+      width: 0 !important;
+      height: 0 !important;
+      z-index: -9999 !important;
+      pointer-events: none !important;
+    }
+    
+    /* FORZA MOSTRARE SOLO NAVIGAZIONE ADMIN */
+    .admin-nav,
+    nav.admin-nav,
+    .admin-nav * {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 9999 !important;
+      pointer-events: auto !important;
+      left: auto !important;
+      top: auto !important;
+      width: auto !important;
+      height: auto !important;
+    }
+
+    /* Nasconde anche possibili header del layout */
+    body > header,
+    body > nav,
+    .layout-header,
+    .site-header {
+      display: none !important;
+    }
+  </style>
+</Layout>

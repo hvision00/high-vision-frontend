@@ -1,0 +1,36 @@
+---
+import "../styles/global.css";
+import Navbar from '../components/Navbar.astro'
+
+export interface Props {
+  navbarTheme?: 'light' | 'dark';
+  title?: string;
+}
+
+const { navbarTheme, title = "Il mio sito Astro" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// Determina automaticamente il tema: light per homepage, dark per altre pagine
+const theme = navbarTheme || (currentPath === '/' ? 'light' : 'dark');
+
+
+---
+
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Il mio sito Astro</title>
+    <!-- Font Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-white text-neutral-900">
+    <Navbar theme={theme} />
+
+    <slot />
+    <main class="mx-auto">
+      
+
+    </main>
+  </body>
+</html>

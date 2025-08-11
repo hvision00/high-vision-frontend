@@ -1,0 +1,18 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ProductDetailPage from '@/components/ProductDetail/ProductDetailPage';
+---
+
+<Layout title="Formazione e Sviluppo Professionale">
+  <ProductDetailPage client:load category="formazione" isCategoryPage={true} />
+</Layout>
+
+<style is:global>
+  nav {
+    display: none !important;
+  }
+  
+  body {
+    background-color: #262626 !important;
+  }
+</style>

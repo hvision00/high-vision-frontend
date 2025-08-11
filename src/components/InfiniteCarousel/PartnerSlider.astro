@@ -1,0 +1,64 @@
+---
+// PartnerSlider.astro
+import { OptimizedPartnerSlider } from './OptimizedPartnerSlider';
+
+// Dati di esempio per i partner
+const partners = [
+  {
+    id: '1',
+    name: 'Google',
+    logo: 'https://logo.clearbit.com/google.com',
+    alt: 'Google Logo'
+  },
+  {
+    id: '2',
+    name: 'Microsoft',
+    logo: 'https://logo.clearbit.com/microsoft.com',
+    alt: 'Microsoft Logo'
+  },
+  {
+    id: '3',
+    name: 'Apple',
+    logo: 'https://logo.clearbit.com/apple.com',
+    alt: 'Apple Logo'
+  },
+  {
+    id: '4',
+    name: 'Amazon',
+    logo: 'https://logo.clearbit.com/amazon.com',
+    alt: 'Amazon Logo'
+  },
+  {
+    id: '5',
+    name: 'Meta',
+    logo: 'https://logo.clearbit.com/meta.com',
+    alt: 'Meta Logo'
+  },
+  {
+    id: '6',
+    name: 'Netflix',
+    logo: 'https://logo.clearbit.com/netflix.com',
+    alt: 'Netflix Logo'
+  },
+  {
+    id: '7',
+    name: 'Tesla',
+    logo: 'https://logo.clearbit.com/tesla.com',
+    alt: 'Tesla Logo'
+  },
+  {
+    id: '8',
+    name: 'Adobe',
+    logo: 'https://logo.clearbit.com/adobe.com',
+    alt: 'Adobe Logo'
+  }
+];
+---
+
+<OptimizedPartnerSlider 
+  partners={partners}
+  speed="normal"
+  pauseOnHover={true}
+  className="bg-gray-50"
+  client:load
+/>

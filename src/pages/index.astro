@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/Layout.astro";
+import HeroSlider from '../components/HeroSlider/HeroSlider.astro';
+import ProductSlider from '../components/ProductSlider/ProductSlider.astro';
+import { OptimizedPartnerSlider } from '../components/InfiniteCarousel/OptimizedPartnerSlider.tsx';
+import MissionSection from '../components/MissionSection/MissionSection.astro';
+import ProductShowcase from '../components/ProductShowcase/ProductShowcase.astro';
+import Newsletter from '../components/Newsletter/Newsletter.astro';
+import Footer from '../components/Footer/Footer.astro';
+import { TestApiConnection } from '../components/TestApiConnection.tsx';
+import { TestLoadCategories } from '../components/TestLoadCategories.tsx'; // ← AGGIUNGI QUESTA LINEA
+
+
+  // Aggiungi i dati dei partner  
+  const partners = [
+    {
+      id: '1',
+      name: 'Google',
+      logo: '/logos/logo-Beta.png',
+      alt: 'Google Logo'
+    },
+    {
+      id: '2',
+      name: 'Microsoft',
+      logo: '/logos/logo-Dewalt.png',
+      alt: 'Microsoft Logo'
+    },
+    {
+      id: '3',
+      name: 'Apple',
+      logo: '/logos/logo-Fami.webp',
+      alt: 'Apple Logo'
+    },
+    {
+      id: '4',
+    name: 'Amazon',
+    logo: '/logos/logo-Fermec.gif',
+    alt: 'Amazon Logo'
+  },
+  {
+    id: '5',
+    name: 'Meta',
+    logo: '/logos/logo-Fervi.png',
+    alt: 'Meta Logo'
+  },
+  {
+    id: '6',
+    name: 'Netflix',
+    logo: '/logos/logo-VFGroup.png',
+    alt: 'Netflix Logo'
+  }
+];
+---
+
+<BaseLayout>
+  <main class="relative min-h-[600px] overflow-hidden">
+
+    <HeroSlider />
+
+    <OptimizedPartnerSlider 
+      partners={partners}
+      speed="normal"
+      client:load
+    />
+
+    <ProductSlider />
+
+    <MissionSection />
+
+    <ProductShowcase />
+
+    <Newsletter />
+
+    <Footer />
+  </main>
+</BaseLayout>

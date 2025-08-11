@@ -1,0 +1,84 @@
+---
+// AboutContentSection.astro
+
+export interface Props {
+  title?: string;
+  highlightedWords?: string[];
+  leftDescription?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+}
+
+const {
+  title = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+  highlightedWords = [],
+  leftDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  imageUrl = "/images/about/network-image.jpg",
+  imageAlt = "Chi siamo"
+} = Astro.props;
+
+// Funzione per evidenziare le parole nel titolo
+function highlightTitle(text: string, words: string[]) {
+  if (words.length === 0) return text;
+  
+  let result = text;
+  words.forEach(word => {
+    const regex = new RegExp(`(${word})`, 'gi');
+    result = result.replace(regex, '<span class="text-brand">$1</span>');
+  });
+  
+  return result;
+}
+
+const processedTitle = highlightedWords.length > 0 ? highlightTitle(title, highlightedWords) : title;
+---
+
+<section class="bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Titolo principale -->
+    <h2 class="text-2xl md:text-4xl lg:text-6xl text-brand max-w-4xl font-telegraf text-center mb-16 max-w-4xl mx-auto" set:html={processedTitle} />
+    
+    <!-- Descrizione centrata -->
+    <div class="flex justify-center mb-20">
+      <div class="text-neutral-600 leading-relaxed max-w-4xl w-full text-center">
+        <p class="text-base md:text-lg">
+          {leftDescription}
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Immagine a larghezza piena -->
+  <div class="w-full">
+    {imageUrl ? (
+      <img 
+        src={imageUrl} 
+        alt={imageAlt} 
+        class="w-full h-auto object-cover"
+        loading="lazy"
+        onerror="console.error('Errore caricamento immagine:', this.src); this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+    ) : null}
+    
+    <!-- Fallback visibile se l'immagine non carica -->
+    <div class="w-full bg-neutral-300 items-center justify-center hidden" style="aspect-ratio: 1920/1080;">
+      <div class="text-center">
+        <span class="text-white text-2xl font-light block">Immagine non trovata</span>
+        <span class="text-white text-sm mt-2 block">Percorso: {imageUrl}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Stili personalizzati se necessari */
+  p {
+    line-height: 1.8;
+  }
+  
+  @media (min-width: 768px) {
+    p {
+      line-height: 1.9;
+    }
+  }
+</style>

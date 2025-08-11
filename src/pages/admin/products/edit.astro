@@ -1,0 +1,759 @@
+---
+// src/pages/admin/products/edit.astro
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout title="Modifica Prodotto - Admin">
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <!-- 🎨 PREMIUM HEADER WITH GLASSMORPHISM -->
+    <div class="bg-white/80 backdrop-blur-xl shadow-xl border-b border-white/20 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-6">
+            <!-- Back Navigation -->
+            <a href="/admin/products" class="group flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200">
+              <div class="w-8 h-8 bg-blue-100 rounded-2xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </div>
+              <span class="font-medium">Gestione Prodotti</span>
+            </a>
+            
+            <!-- Page Title -->
+            <div class="flex items-center space-x-4">
+              <div class="w-1 h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></div>
+              <div>
+                <h1 id="page-title" class="text-2xl font-bold text-gray-900">Nuovo Prodotto</h1>
+                <p class="text-sm text-gray-500 mt-1">Crea o modifica un prodotto del catalogo</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Actions -->
+          <div class="flex items-center space-x-4">
+            <!-- Save Button (will be shown when form is dirty) -->
+            <button id="quick-save-btn" class="hidden flex items-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-2.5 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="font-medium">Salva</span>
+            </button>
+            
+            <!-- Status Indicator -->
+            <div class="flex items-center space-x-2 bg-white/60 rounded-2xl px-4 py-2 backdrop-blur-sm">
+              <div id="status-indicator" class="w-2 h-2 bg-gray-400 rounded-full"></div>
+              <span id="status-text" class="text-sm font-medium text-gray-600">Non salvato</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 🎨 PREMIUM MAIN CONTENT -->
+    <div class="max-w-5xl mx-auto px-6 lg:px-8 py-8">
+      
+      <!-- Loading State -->
+      <div id="loading-state" class="hidden">
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-20">
+          <div class="flex flex-col items-center justify-center">
+            <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-6"></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Caricamento prodotto...</h3>
+            <p class="text-gray-500">Attendere prego</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="hidden">
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-20">
+          <div class="text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Errore nel caricamento</h3>
+            <p class="text-gray-600 mb-6"><span id="error-message">Si è verificato un errore</span></p>
+            <button id="retry-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-2xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+              Riprova
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📝 PREMIUM PRODUCT FORM -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+        <form id="product-form" class="space-y-8">
+          <!-- 📋 FORM HEADER -->
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 border-b border-blue-100">
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center">
+                <div class="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-pulse"></div>
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-gray-900">Dettagli Prodotto</h2>
+                <p class="text-sm text-blue-600 mt-1">Compila i campi per creare o modificare il prodotto</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🎯 BASIC INFO SECTION -->
+          <div class="p-8 space-y-8">
+            <div class="space-y-6">
+              <div class="flex items-center space-x-3">
+                <div class="w-6 h-6 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Informazioni Base</h3>
+              </div>
+              
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Product Name -->
+                <div class="space-y-2">
+                  <label for="name" class="block text-sm font-semibold text-gray-700">
+                    Nome Prodotto
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-blue-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-900 placeholder-gray-500 font-medium"
+                    placeholder="es. Sviluppo Sito Web Aziendale"
+                  />
+                  <p class="text-xs text-gray-500">Il nome del prodotto che verrà mostrato ai clienti</p>
+                </div>
+                
+                <!-- URL Slug -->
+                <div class="space-y-2">
+                  <label for="slug" class="block text-sm font-semibold text-gray-700">
+                    Slug URL
+                  </label>
+                  <div class="relative">
+                    <input
+                      type="text"
+                      id="slug"
+                      name="slug"
+                      class="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-blue-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-900 placeholder-gray-500 font-medium"
+                      placeholder="sviluppo-sito-web-aziendale"
+                    />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                      <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                    </div>
+                  </div>
+                  <p class="text-xs text-gray-500">URL-friendly: solo lettere minuscole, numeri e trattini</p>
+                </div>
+              </div>
+            </div>
+
+          <!-- Category Selection -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">
+                Categoria (opzionale)
+              </label>
+              <select
+                id="category_id"
+                name="category_id"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Nessuna categoria</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="subcategory_id" class="block text-sm font-medium text-gray-700 mb-2">
+                Sottocategoria (opzionale)
+              </label>
+              <select
+                id="subcategory_id"
+                name="subcategory_id"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Nessuna sottocategoria</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Descriptions -->
+          <div>
+            <label for="short_description" class="block text-sm font-medium text-gray-700 mb-2">
+              Descrizione Breve
+            </label>
+            <textarea
+              id="short_description"
+              name="short_description"
+              rows="2"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Breve descrizione del prodotto"
+            ></textarea>
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+              Descrizione Completa (opzionale)
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Descrizione dettagliata del prodotto (opzionale)"
+            ></textarea>
+          </div>
+
+          <!-- Pricing -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+                Prezzo (€)
+              </label>
+              <input
+                type="number"
+                id="price"
+                name="price"
+                step="0.01"
+                min="0"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0.00"
+              />
+            </div>
+            
+            <div>
+              <label for="price_range" class="block text-sm font-medium text-gray-700 mb-2">
+                Range di Prezzo
+              </label>
+              <input
+                type="text"
+                id="price_range"
+                name="price_range"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="€100 - €500"
+              />
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div>
+            <label for="features" class="block text-sm font-medium text-gray-700 mb-2">
+              Caratteristiche
+            </label>
+            <textarea
+              id="features"
+              name="features"
+              rows="3"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Una caratteristica per riga"
+            ></textarea>
+            <p class="text-xs text-gray-500 mt-1">Una caratteristica per riga</p>
+          </div>
+
+          <!-- Images -->
+          <div>
+            <label for="images" class="block text-sm font-medium text-gray-700 mb-2">
+              Immagini (URL)
+            </label>
+            <textarea
+              id="images"
+              name="images"
+              rows="3"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Un URL per riga"
+            ></textarea>
+            <p class="text-xs text-gray-500 mt-1">Un URL di immagine per riga</p>
+          </div>
+
+          <!-- Additional Options -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                Stato
+              </label>
+              <select
+                id="status"
+                name="status"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="active">Attivo</option>
+                <option value="draft">Bozza</option>
+                <option value="archived">Archiviato</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="badge" class="block text-sm font-medium text-gray-700 mb-2">
+                Badge
+              </label>
+              <input
+                type="text"
+                id="badge"
+                name="badge"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Nuovo, In Offerta, etc."
+              />
+            </div>
+
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="featured"
+                name="featured"
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label for="featured" class="ml-2 block text-sm text-gray-900">
+                Prodotto in evidenza
+              </label>
+            </div>
+          </div>
+
+          <!-- Referenti -->
+          <div>
+            <label for="referenti" class="block text-sm font-medium text-gray-700 mb-2">
+              Referenti (opzionale)
+            </label>
+            <textarea
+              id="referenti"
+              name="referenti"
+              rows="2"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Informazioni sui referenti (opzionale)"
+            ></textarea>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+            <button
+              type="button"
+              id="cancel-btn"
+              class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Annulla
+            </button>
+            
+            <div class="flex space-x-3">
+              <button
+                type="button"
+                id="save-draft-btn"
+                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Salva come Bozza
+              </button>
+              <button
+                type="submit"
+                id="save-btn"
+                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <span id="save-btn-text">Salva Prodotto</span>
+                <div id="save-btn-loading" class="hidden inline-flex items-center">
+                  <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Salvando...
+                </div>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEditing = false;
+    let currentProductId: string | null = null;
+    let categories: any[] = [];
+    let subcategories: any[] = [];
+
+    // Get product ID from URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    if (productId) {
+      isEditing = true;
+      currentProductId = productId;
+      document.getElementById('page-title')!.textContent = 'Modifica Prodotto';
+    }
+
+    async function loadCategories() {
+      try {
+        const response = await fetch('/api/catalog/categories', {
+          credentials: 'include'
+        });
+        
+        if (!response.ok) throw new Error('Failed to load categories');
+        
+        const data = await response.json();
+        if (data.success) {
+          // Filtro solo le 4 categorie principali
+          const mainCategoryIds = [
+            'immagine',                        // Immagine & Comunicazione
+            'sicurezza',                       // Sicurezza & Protezione
+            'e6nbi7xju9xa5rnz5p9sjwgl',       // Formazione & Consulenza
+            'sxrgfywyk7ac25hch1r4ppzl'        // Industria & Attrezzature
+          ];
+          
+          categories = data.data.filter((cat: any) => 
+            mainCategoryIds.includes(cat.id)
+          );
+          
+          console.log('✅ Categorie principali caricate per admin:', categories.length, categories.map(c => c.name));
+          populateCategoryDropdown();
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    }
+
+    async function loadSubcategories(categoryId: string) {
+      try {
+        const response = await fetch(`/api/catalog/categories/${categoryId}/subcategories`, {
+          credentials: 'include'
+        });
+        
+        if (!response.ok) throw new Error('Failed to load subcategories');
+        
+        const data = await response.json();
+        if (data.success) {
+          subcategories = data.data;
+          populateSubcategoryDropdown();
+        }
+      } catch (error) {
+        console.error('Error loading subcategories:', error);
+      }
+    }
+
+    function populateCategoryDropdown() {
+      const categorySelect = document.getElementById('category_id') as HTMLSelectElement;
+      categorySelect.innerHTML = '<option value="">Seleziona categoria...</option>';
+      
+      categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    function populateSubcategoryDropdown() {
+      const subcategorySelect = document.getElementById('subcategory_id') as HTMLSelectElement;
+      subcategorySelect.innerHTML = '<option value="">Seleziona sottocategoria...</option>';
+      subcategorySelect.disabled = subcategories.length === 0;
+      
+      subcategories.forEach(subcategory => {
+        const option = document.createElement('option');
+        option.value = subcategory.id;
+        option.textContent = subcategory.name;
+        subcategorySelect.appendChild(option);
+      });
+    }
+
+    async function loadProduct(productId: string) {
+      const loadingEl = document.getElementById('loading-state')!;
+      const errorEl = document.getElementById('error-state')!;
+      const formEl = document.getElementById('product-form')!;
+
+      loadingEl.classList.remove('hidden');
+      errorEl.classList.add('hidden');
+      formEl.classList.add('hidden');
+
+      try {
+        const response = await fetch(`/api/admin/products/${productId}`, {
+          credentials: 'include'
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          populateForm(data.data);
+          loadingEl.classList.add('hidden');
+          formEl.classList.remove('hidden');
+        } else {
+          throw new Error('Invalid response format');
+        }
+
+      } catch (error: unknown) {
+        console.error('Error loading product:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        document.getElementById('error-message')!.textContent = errorMessage;
+        loadingEl.classList.add('hidden');
+        errorEl.classList.remove('hidden');
+      }
+    }
+
+    function populateForm(product: any) {
+      (document.getElementById('name') as HTMLInputElement).value = product.name || '';
+      (document.getElementById('slug') as HTMLInputElement).value = product.slug || '';
+      (document.getElementById('short_description') as HTMLTextAreaElement).value = product.short_description || '';
+      (document.getElementById('description') as HTMLTextAreaElement).value = product.description || '';
+      (document.getElementById('price') as HTMLInputElement).value = product.price || '';
+      (document.getElementById('price_range') as HTMLInputElement).value = product.price_range || '';
+      (document.getElementById('features') as HTMLTextAreaElement).value = Array.isArray(product.features) ? product.features.join('\n') : product.features || '';
+      (document.getElementById('images') as HTMLTextAreaElement).value = Array.isArray(product.images) ? product.images.join('\n') : product.images || '';
+      (document.getElementById('status') as HTMLSelectElement).value = product.status || 'active';
+      (document.getElementById('badge') as HTMLInputElement).value = product.badge || '';
+      (document.getElementById('featured') as HTMLInputElement).checked = product.featured || false;
+      (document.getElementById('referenti') as HTMLTextAreaElement).value = product.referenti || '';
+
+      // Set category and load subcategories
+      if (product.category_id) {
+        (document.getElementById('category_id') as HTMLSelectElement).value = product.category_id;
+        loadSubcategories(product.category_id).then(() => {
+          if (product.subcategory_id) {
+            (document.getElementById('subcategory_id') as HTMLSelectElement).value = product.subcategory_id;
+          }
+        });
+      }
+    }
+
+    function generateSlug(name: string): string {
+      return name
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim();
+    }
+
+    async function saveProduct(isDraft = false) {
+      const formData = new FormData(document.getElementById('product-form') as HTMLFormElement);
+      
+      const productData: any = {
+        name: formData.get('name') || '',
+        slug: formData.get('slug') || '',
+        description: formData.get('description') || '',
+        short_description: formData.get('short_description') || null,
+        category_id: formData.get('category_id') || '',
+        subcategory_id: formData.get('subcategory_id') || '',
+        price: formData.get('price') ? formData.get('price') : null, // ← Mantieni come stringa
+        price_range: formData.get('price_range') || null,
+        badge: formData.get('badge') || null,
+        featured: formData.has('featured'),
+        referenti: formData.get('referenti') || null,
+        status: isDraft ? 'draft' : (formData.get('status') || 'active'),
+      };
+
+      // Process features
+      const featuresText = formData.get('features') as string;
+      if (featuresText) {
+        productData.features = featuresText.split('\n').filter(f => f.trim());
+      }
+
+      // Process images
+      const imagesText = formData.get('images') as string;
+      if (imagesText) {
+        productData.images = imagesText.split('\n').filter(img => img.trim());
+      }
+
+        // console.log('📤 Sending product data:', productData);
+
+      try {
+        let response;
+        if (isEditing && currentProductId) {
+          response = await fetch(`/api/admin/products/${currentProductId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(productData),
+          });
+        } else {
+          response = await fetch('/api/admin/products', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(productData),
+          });
+        }
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Response error:', errorText);
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        // console.log('Save result:', result);
+
+        if (result.success) {
+          alert(result.message || 'Prodotto salvato con successo!');
+          window.location.href = '/admin/products';
+        } else {
+          alert(`Errore: ${result.error || 'Errore sconosciuto'}`);
+        }
+      } catch (error: unknown) {
+        console.error('Error saving product:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        alert(`Errore nel salvataggio: ${errorMessage}`);
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadCategories();
+
+      if (isEditing && currentProductId) {
+        await loadProduct(currentProductId);
+      } else {
+        document.getElementById('loading-state')!.classList.add('hidden');
+        document.getElementById('product-form')!.classList.remove('hidden');
+      }
+
+      // Auto-generate slug from name
+      document.getElementById('name')!.addEventListener('input', (e) => {
+        const name = (e.target as HTMLInputElement).value;
+        const slugInput = document.getElementById('slug') as HTMLInputElement;
+        if (!slugInput.value || slugInput.dataset.autoGenerated === 'true') {
+          slugInput.value = generateSlug(name);
+          slugInput.dataset.autoGenerated = 'true';
+        }
+      });
+
+      // Manual slug editing
+      document.getElementById('slug')!.addEventListener('input', () => {
+        const slugInput = document.getElementById('slug') as HTMLInputElement;
+        slugInput.dataset.autoGenerated = 'false';
+      });
+
+      // Category change
+      document.getElementById('category_id')!.addEventListener('change', (e) => {
+        const categoryId = (e.target as HTMLSelectElement).value;
+        if (categoryId) {
+          loadSubcategories(categoryId);
+        } else {
+          const subcategorySelect = document.getElementById('subcategory_id') as HTMLSelectElement;
+          subcategorySelect.innerHTML = '<option value="">Seleziona prima una categoria...</option>';
+          subcategorySelect.disabled = true;
+        }
+      });
+
+      // Form submission
+      document.getElementById('product-form')!.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const saveBtn = document.getElementById('save-btn')!;
+        const saveBtnText = document.getElementById('save-btn-text')!;
+        const saveBtnLoading = document.getElementById('save-btn-loading')!;
+        
+        saveBtn.setAttribute('disabled', 'true');
+        saveBtnText.classList.add('hidden');
+        saveBtnLoading.classList.remove('hidden');
+        
+        try {
+          await saveProduct(false);
+        } finally {
+          saveBtn.removeAttribute('disabled');
+          saveBtnText.classList.remove('hidden');
+          saveBtnLoading.classList.add('hidden');
+        }
+      });
+
+      // Save as draft
+      document.getElementById('save-draft-btn')!.addEventListener('click', () => {
+        saveProduct(true);
+      });
+
+      // Cancel
+      document.getElementById('cancel-btn')!.addEventListener('click', () => {
+        if (confirm('Sei sicuro di voler annullare? Le modifiche non salvate andranno perse.')) {
+          window.location.href = '/admin/products';
+        }
+      });
+
+      // Retry
+      document.getElementById('retry-btn')!.addEventListener('click', () => {
+        if (isEditing && currentProductId) {
+          loadProduct(currentProductId);
+        }
+      });
+    });
+  </script>
+</Layout>
+
+<style is:global>
+    /* Nascondi completamente la navbar del frontend nelle pagine admin */
+    body nav,
+    header nav,
+    .navbar,
+    nav:not(.admin-nav) {
+      display: none !important;
+      visibility: hidden !important;
+      position: absolute !important;
+      left: -9999px !important;
+      z-index: -1 !important;
+      pointer-events: none !important;
+    }
+    
+    /* Assicurati che i contenuti admin siano visibili */
+    .admin-nav,
+    nav.admin-nav {
+      display: flex !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 1000 !important;
+    }
+
+    /* 🌊 GLASSMORPHISM EFFECTS */
+    .backdrop-blur-xl {
+      backdrop-filter: blur(16px);
+    }
+    
+    .backdrop-blur-sm {
+      backdrop-filter: blur(4px);
+    }
+
+    /* 🎯 PREMIUM FOCUS STYLES */
+    .focus\:ring-0:focus {
+      --tw-ring-shadow: 0 0 #0000;
+      box-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    }
+
+    /* ✨ SMOOTH TRANSITIONS */
+    input, textarea, select, button {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 🎨 GRADIENT BACKGROUNDS */
+    .bg-gradient-to-br {
+      background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+    }
+
+    .bg-gradient-to-r {
+      background-image: linear-gradient(to right, var(--tw-gradient-stops));
+    }
+
+    /* 🔥 PREMIUM BUTTON EFFECTS */
+    .hover\:-translate-y-0\.5:hover {
+      transform: translateY(-2px);
+    }
+
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+
+    /* 📋 FORM ENHANCEMENTS */
+    .form-floating-label {
+      position: relative;
+    }
+
+    .form-floating-label input:focus + label,
+    .form-floating-label input:not(:placeholder-shown) + label {
+      transform: translateY(-1.5rem) scale(0.8);
+      color: #2563eb;
+    }
+
+    /* 🎯 PREMIUM SHADOWS */
+    .shadow-xl {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .hover\:shadow-2xl:hover {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+  </style>

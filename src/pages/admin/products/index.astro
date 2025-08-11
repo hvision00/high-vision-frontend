@@ -1,0 +1,840 @@
+---
+// src/pages/admin/products/index.astro
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout title="Gestione Prodotti - Admin">
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <!-- 🎨 PREMIUM HEADER WITH GLASSMORPHISM -->
+    <div class="bg-white/80 backdrop-blur-xl shadow-xl border-b border-white/20 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-6">
+            <!-- Back Navigation -->
+            <a href="/admin/dashboard" class="group flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200">
+              <div class="w-8 h-8 bg-blue-100 rounded-2xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </div>
+              <span class="font-medium">Dashboard</span>
+            </a>
+            
+            <!-- Page Title -->
+            <div class="flex items-center space-x-4">
+              <div class="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
+              <div>
+                <h1 class="text-2xl font-bold text-gray-900">Gestione Prodotti</h1>
+                <p class="text-sm text-gray-500 mt-1">Amministra il catalogo prodotti</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Navigation & Actions -->
+          <div class="flex items-center space-x-4">
+            <!-- Premium Navigation -->
+            <nav class="admin-nav hidden lg:flex items-center space-x-2 bg-white/60 rounded-2xl p-2 backdrop-blur-sm">
+              <a href="/admin/dashboard" class="flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span class="font-medium">Dashboard</span>
+              </a>
+              <a href="/admin/subcategories" class="flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 transition-all duration-200">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <span class="font-medium">Sottocategorie</span>
+              </a>
+              <a href="/admin/contacts" class="flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-600 hover:text-green-600 hover:bg-green-50 transition-all duration-200">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span class="font-medium">Contatti</span>
+              </a>
+
+              <div class="flex items-center space-x-2 px-4 py-2 rounded-xl text-orange-600 bg-orange-50">
+                <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                <span class="font-medium">Prodotti</span>
+              </div>
+            </nav>
+            
+            <!-- Logout Button -->
+            <button id="logout-btn" class="group flex items-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2.5 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span class="font-medium">Logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 🎨 PREMIUM MAIN CONTENT -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-8 space-y-8">
+      
+      <!-- 📊 STATS OVERVIEW -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Prodotti Totali</p>
+              <p id="total-products" class="text-3xl font-bold text-gray-900 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Prodotti Attivi</p>
+              <p id="active-products" class="text-3xl font-bold text-green-600 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Bozze</p>
+              <p id="draft-products" class="text-3xl font-bold text-orange-600 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Visualizzazioni</p>
+              <p id="total-views" class="text-3xl font-bold text-purple-600 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 🔍 PREMIUM FILTERS & ACTIONS -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
+        <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
+          
+          <!-- Search & Filters -->
+          <div class="flex-1 flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            <!-- Search Input -->
+            <div class="flex-1 relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Cerca prodotti per nome, categoria..."
+                class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-blue-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-900 placeholder-gray-500"
+              />
+            </div>
+            
+            <!-- Status Filter -->
+            <select id="status-filter" class="px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-blue-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-700 font-medium min-w-[160px]">
+              <option value="">Tutti gli stati</option>
+              <option value="active">🟢 Attivo</option>
+              <option value="draft">🟡 Bozza</option>
+              <option value="archived">🔴 Archiviato</option>
+            </select>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="flex items-center space-x-4">
+            <button
+              id="search-btn"
+              class="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-4 rounded-2xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span>Cerca</span>
+            </button>
+            
+            <a
+              href="/admin/products/edit"
+              class="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-4 rounded-2xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Nuovo Prodotto</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📋 PREMIUM PRODUCTS TABLE -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+        
+        <!-- Loading State -->
+        <div id="products-loading" class="flex flex-col justify-center items-center py-20">
+          <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+          <p class="text-gray-600 font-medium">Caricamento prodotti...</p>
+          <p class="text-sm text-gray-400 mt-1">Attendere prego</p>
+        </div>
+        
+        <!-- Products Grid/Table -->
+        <div id="products-table" class="hidden">
+          <!-- Table Header -->
+          <div class="bg-gradient-to-r from-gray-50 to-blue-50 px-8 py-6 border-b border-gray-200">
+            <div class="grid grid-cols-12 gap-4 items-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+              <div class="col-span-4">Prodotto</div>
+              <div class="col-span-2">Categoria</div>
+              <div class="col-span-1">Stato</div>
+              <div class="col-span-1">Views</div>
+              <div class="col-span-2">Data</div>
+              <div class="col-span-2 text-right">Azioni</div>
+            </div>
+          </div>
+          
+          <!-- Products List -->
+          <div id="products-tbody" class="divide-y divide-gray-100">
+            <!-- Products will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="products-error" class="hidden text-center py-20">
+          <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Errore nel caricamento</h3>
+          <p class="text-gray-600 mb-6">Non è stato possibile caricare i prodotti</p>
+          <button id="retry-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-2xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+            Riprova
+          </button>
+        </div>
+      </div>
+
+      <!-- 📄 PREMIUM PAGINATION -->
+      <div id="pagination" class="hidden">
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-6">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-sm text-gray-700 font-medium">
+              Mostrando <span id="showing-from" class="font-bold text-blue-600">1</span> - 
+              <span id="showing-to" class="font-bold text-blue-600">10</span> di 
+              <span id="total-products-pagination" class="font-bold text-gray-900">0</span> prodotti
+            </div>
+            
+            <div class="flex items-center space-x-2">
+              <button id="prev-btn" class="flex items-center space-x-2 px-4 py-2 border-2 border-gray-200 rounded-2xl text-sm font-medium text-gray-700 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200" disabled>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                <span>Precedente</span>
+              </button>
+              
+              <div id="page-info" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-2xl">
+                Pagina 1 di 1
+              </div>
+              
+              <button id="next-btn" class="flex items-center space-x-2 px-4 py-2 border-2 border-gray-200 rounded-2xl text-sm font-medium text-gray-700 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200" disabled>
+                <span>Successiva</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- 🗑️ PREMIUM DELETE CONFIRMATION MODAL -->
+  <div id="delete-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95 opacity-0 modal-enter">
+      
+      <!-- Header -->
+      <div class="relative bg-gradient-to-r from-red-50 to-pink-50 p-8 rounded-t-3xl border-b border-red-100">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Elimina Prodotto</h3>
+            <p class="text-red-600 text-sm mt-1">Questa azione non può essere annullata</p>
+          </div>
+        </div>
+        
+        <!-- Close Button -->
+        <button class="absolute top-6 right-6 w-8 h-8 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110" onclick="closeDeleteModal()">
+          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Content -->
+      <div class="p-8 space-y-6">
+        <div class="text-center">
+          <p class="text-gray-700 mb-2">Sei sicuro di voler eliminare il prodotto</p>
+          <p id="delete-product-name" class="font-semibold text-gray-900 text-lg"></p>
+          <p class="text-sm text-gray-500 mt-2">Tutti i dati associati verranno persi definitivamente.</p>
+        </div>
+        
+        <!-- Warning Box -->
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-4">
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm text-red-700 font-medium">Attenzione: questa operazione è irreversibile</p>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex items-center justify-end space-x-3 pt-4">
+          <button onclick="closeDeleteModal()" 
+                  class="px-6 py-3 border-2 border-gray-200 text-gray-700 rounded-2xl font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-200">
+            Annulla
+          </button>
+          <button id="confirm-delete-btn" 
+                  class="px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-400">
+            <div class="flex items-center space-x-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Elimina Definitivamente</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentPage = 1;
+    let currentLimit = 10;
+    let currentFilters: Record<string, string> = {};
+
+    interface Product {
+      id: string;
+      name: string;
+      description: string;
+      category_name?: string;
+      subcategory_name?: string;
+      status: string;
+      views?: number;
+      created_at: string;
+    }
+
+    interface PaginationData {
+      page: number;
+      limit: number;
+      total: number;
+      pages: number;
+    }
+
+    async function loadProducts(page = 1, limit = 10, filters: Record<string, string> = {}) {
+      const loadingEl = document.getElementById('products-loading');
+      const tableEl = document.getElementById('products-table');
+      const errorEl = document.getElementById('products-error');
+      const tbodyEl = document.getElementById('products-tbody');
+      const paginationEl = document.getElementById('pagination');
+
+      if (!loadingEl || !tableEl || !errorEl || !tbodyEl || !paginationEl) {
+        console.error('Required elements not found');
+        return;
+      }
+
+      // Show loading
+      loadingEl.classList.remove('hidden');
+      tableEl.classList.add('hidden');
+      errorEl.classList.add('hidden');
+      paginationEl.classList.add('hidden');
+
+      try {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+          ...filters
+        });
+
+        const response = await fetch(`/api/admin/products?${params}`, {
+          credentials: 'include'
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          const products: Product[] = data.data;
+          const pagination: PaginationData = data.pagination;
+
+          // Update table
+          // 🎨 PREMIUM PRODUCT CARDS RENDERING
+          tbodyEl.innerHTML = products.map((product: Product) => `
+            <div class="grid grid-cols-12 gap-4 items-center px-8 py-6 hover:bg-blue-50/50 transition-all duration-200 group">
+              <!-- Product Info (4 cols) -->
+              <div class="col-span-4 flex items-center space-x-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                  <div class="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">${product.name}</h3>
+                  <p class="text-sm text-gray-500 mt-1 line-clamp-1">${product.description ? product.description.substring(0, 60) + '...' : 'Nessuna descrizione'}</p>
+                </div>
+              </div>
+              
+              <!-- Category (2 cols) -->
+              <div class="col-span-2">
+                <div class="text-sm font-medium text-gray-900">${product.category_name || 'N/A'}</div>
+                ${product.subcategory_name ? `<div class="text-xs text-gray-500 mt-1">${product.subcategory_name}</div>` : ''}
+              </div>
+              
+              <!-- Status (1 col) -->
+              <div class="col-span-1">
+                <div class="inline-flex items-center px-3 py-1.5 rounded-2xl text-xs font-medium ${
+                  product.status === 'active' ? 'bg-green-100 text-green-700 border border-green-200' :
+                  product.status === 'draft' ? 'bg-orange-100 text-orange-700 border border-orange-200' :
+                  'bg-gray-100 text-gray-700 border border-gray-200'
+                }">
+                  <div class="w-2 h-2 rounded-full mr-2 ${
+                    product.status === 'active' ? 'bg-green-500' :
+                    product.status === 'draft' ? 'bg-orange-500' :
+                    'bg-gray-500'
+                  }"></div>
+                  ${product.status === 'active' ? 'Attivo' : product.status === 'draft' ? 'Bozza' : 'Altro'}
+                </div>
+              </div>
+              
+              <!-- Views (1 col) -->
+              <div class="col-span-1">
+                <div class="flex items-center space-x-1">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span class="text-sm font-medium text-gray-600">${product.views || 0}</span>
+                </div>
+              </div>
+              
+              <!-- Date (2 cols) -->
+              <div class="col-span-2">
+                <div class="text-sm text-gray-600">${new Date(product.created_at).toLocaleDateString('it-IT', { 
+                  day: '2-digit', 
+                  month: 'short', 
+                  year: 'numeric' 
+                })}</div>
+                <div class="text-xs text-gray-400 mt-1">Creato</div>
+              </div>
+              
+              <!-- Actions (2 cols) -->
+              <div class="col-span-2 flex justify-end space-x-2">
+                <button class="edit-btn flex items-center space-x-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-2xl font-medium transition-all duration-200 hover:scale-105 hover:shadow-md" data-product-id="${product.id}">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  <span class="hidden sm:block">Modifica</span>
+                </button>
+                
+                <button class="delete-btn flex items-center space-x-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-2xl font-medium transition-all duration-200 hover:scale-105 hover:shadow-md" data-product-id="${product.id}">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <span class="hidden sm:block">Elimina</span>
+                </button>
+              </div>
+            </div>
+          `).join('');
+
+          // 📊 UPDATE STATS CARDS
+          const totalProductsStatsEl = document.getElementById('total-products');
+          const activeProductsEl = document.getElementById('active-products');
+          const draftProductsEl = document.getElementById('draft-products');
+          const totalViewsEl = document.getElementById('total-views');
+          
+          if (totalProductsStatsEl) totalProductsStatsEl.textContent = pagination.total.toString();
+          
+          // Calculate stats from current products (approximate)
+          const activeCount = products.filter(p => p.status === 'active').length;
+          const draftCount = products.filter(p => p.status === 'draft').length;
+          const totalViews = products.reduce((sum, p) => sum + (p.views || 0), 0);
+          
+          if (activeProductsEl) activeProductsEl.textContent = activeCount.toString();
+          if (draftProductsEl) draftProductsEl.textContent = draftCount.toString();
+          if (totalViewsEl) totalViewsEl.textContent = totalViews.toString();
+
+          // 📄 UPDATE PAGINATION
+          const showingFromEl = document.getElementById('showing-from');
+          const showingToEl = document.getElementById('showing-to');
+          const totalProductsPaginationEl = document.getElementById('total-products-pagination');
+          const pageInfoEl = document.getElementById('page-info');
+          const prevBtnEl = document.getElementById('prev-btn') as HTMLButtonElement;
+          const nextBtnEl = document.getElementById('next-btn') as HTMLButtonElement;
+
+          if (showingFromEl) showingFromEl.textContent = ((pagination.page - 1) * pagination.limit + 1).toString();
+          if (showingToEl) showingToEl.textContent = Math.min(pagination.page * pagination.limit, pagination.total).toString();
+          if (totalProductsPaginationEl) totalProductsPaginationEl.textContent = pagination.total.toString();
+          if (pageInfoEl) pageInfoEl.textContent = `Pagina ${pagination.page} di ${pagination.pages}`;
+          
+          if (prevBtnEl) prevBtnEl.disabled = pagination.page <= 1;
+          if (nextBtnEl) nextBtnEl.disabled = pagination.page >= pagination.pages;
+
+          // Show table and pagination
+          loadingEl.classList.add('hidden');
+          tableEl.classList.remove('hidden');
+          paginationEl.classList.remove('hidden');
+
+          // Update current state
+          currentPage = pagination.page;
+          currentLimit = pagination.limit;
+
+        } else {
+          throw new Error('Invalid response format');
+        }
+
+      } catch (error: unknown) {
+        console.error('Error loading products:', error);
+        loadingEl.classList.add('hidden');
+        errorEl.classList.remove('hidden');
+      }
+    }
+
+    // 🎨 PREMIUM MODAL FUNCTIONS
+    let productToDelete: string | null = null;
+    
+    function openDeleteModal(productId: string, productName: string) {
+      console.log('🚀 openDeleteModal called with:', { productId, productName });
+      
+      productToDelete = productId;
+      const modal = document.getElementById('delete-modal');
+      const productNameEl = document.getElementById('delete-product-name');
+      
+      console.log('🔍 Modal elements found:', { modal: !!modal, productNameEl: !!productNameEl });
+      
+      if (!modal) {
+        console.error('❌ Delete modal not found!');
+        return;
+      }
+      
+      if (productNameEl) {
+        productNameEl.textContent = `"${productName}"`;
+      }
+      
+      console.log('👁️ Showing modal...');
+      modal.classList.remove('hidden');
+      
+      // Trigger animation
+      const modalContent = modal.querySelector('.transform');
+      if (modalContent) {
+        modalContent.classList.remove('modal-enter');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        
+        requestAnimationFrame(() => {
+          modalContent.classList.remove('scale-95', 'opacity-0');
+          modalContent.classList.add('modal-enter');
+        });
+      }
+    }
+    
+    function closeDeleteModal() {
+      productToDelete = null;
+      document.getElementById('delete-modal')!.classList.add('hidden');
+    }
+    
+    // Make functions global
+    (window as any).closeDeleteModal = closeDeleteModal;
+
+    async function deleteProductById(id: string) {
+      console.log('🚀 deleteProductById called with ID:', id);
+      
+      try {
+        console.log('📡 Making DELETE request to:', `/api/admin/products/${id}`);
+        const response = await fetch(`/api/admin/products/${id}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+
+        console.log('📡 Response status:', response.status, response.statusText);
+        
+        const result = await response.json();
+        console.log('📡 Response data:', result);
+
+        if (result.success) {
+          alert('Prodotto eliminato con successo!');
+          // Reload the current page
+          loadProducts(currentPage, currentLimit, currentFilters);
+        } else {
+          alert(`Errore nell'eliminazione: ${result.error || 'Errore sconosciuto'}`);
+        }
+      } catch (error: unknown) {
+        console.error('Error deleting product:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        alert(`Errore nell'eliminazione: ${errorMessage}`);
+      }
+    }
+
+    // Event listeners
+    // RIMUOVI FISICAMENTE LA NAVBAR DEL FRONTEND
+    function removeMainNavbar() {
+      const navSelectors = [
+        'body > nav',
+        'body > header nav', 
+        'nav:not(.admin-nav)',
+        '[data-navbar]',
+        '.navbar:not(.admin-nav)'
+      ];
+      
+      navSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+          if (!el.classList.contains('admin-nav')) {
+            // Evita di loggare l'elemento DOM intero per non innescare strutture circolari in HMR
+            // console.log('🗑️ Removing navbar element:', el);
+            el.remove();
+          }
+        });
+      });
+    }
+
+    // INTERCETTA TUTTI GLI EVENTI DI NAVIGAZIONE
+    function setupNavbarRemoval() {
+      const intervalId = setInterval(removeMainNavbar, 1000);
+      window.addEventListener('pageshow', removeMainNavbar);
+      window.addEventListener('popstate', removeMainNavbar);
+      window.addEventListener('hashchange', removeMainNavbar);
+      window.addEventListener('beforeunload', () => clearInterval(intervalId));
+      
+      const observer = new MutationObserver(() => removeMainNavbar());
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      setupNavbarRemoval();
+      
+      loadProducts();
+
+      // Event delegation for edit and delete buttons
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        console.log('🖱️ Click detected on:', target.tagName, target.className);
+        
+        // Find the actual button (could be clicked on child elements like SVG or span)
+        const editBtn = target.closest('.edit-btn') as HTMLElement;
+        const deleteBtn = target.closest('.delete-btn') as HTMLElement;
+        
+        console.log('🔍 Found buttons:', { editBtn: !!editBtn, deleteBtn: !!deleteBtn });
+        
+        if (editBtn) {
+          const productId = editBtn.getAttribute('data-product-id');
+          console.log('🔧 Edit button clicked, productId:', productId);
+          if (productId) {
+            console.log('🔧 Redirecting to edit page for product:', productId);
+            window.location.href = `/admin/products/edit?id=${productId}`;
+          }
+        }
+        
+        if (deleteBtn) {
+          const productId = deleteBtn.getAttribute('data-product-id');
+          console.log('🗑️ Delete button clicked, productId:', productId);
+          if (productId) {
+            console.log('🗑️ Opening delete modal for product:', productId);
+            // Find product name from the DOM
+            const productRow = deleteBtn.closest('.grid');
+            const productNameEl = productRow?.querySelector('h3');
+            const productName = productNameEl?.textContent || 'Prodotto senza nome';
+            
+            console.log('🗑️ Product name found:', productName);
+            openDeleteModal(productId, productName);
+          }
+        }
+      });
+
+      const searchBtn = document.getElementById('search-btn');
+      if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+          const searchInput = document.getElementById('search-input') as HTMLInputElement;
+          const statusFilter = document.getElementById('status-filter') as HTMLSelectElement;
+          
+          const search = searchInput?.value || '';
+          const status = statusFilter?.value || '';
+          
+          currentFilters = {};
+          if (search) currentFilters.search = search;
+          if (status) currentFilters.status = status;
+          
+          loadProducts(1, currentLimit, currentFilters);
+        });
+      }
+
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+          loadProducts(currentPage, currentLimit, currentFilters);
+        });
+      }
+
+      const prevBtn = document.getElementById('prev-btn');
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (currentPage > 1) {
+            loadProducts(currentPage - 1, currentLimit, currentFilters);
+          }
+        });
+      }
+
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          loadProducts(currentPage + 1, currentLimit, currentFilters);
+        });
+      }
+
+      // Setup delete confirmation modal
+      const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+      if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', async () => {
+          console.log('🔴 Confirm delete button clicked!');
+          console.log('🔍 productToDelete variable:', productToDelete);
+          
+          if (productToDelete) {
+            console.log('✅ Product ID found, proceeding with deletion:', productToDelete);
+            
+            // Salva l'ID prima di chiudere il modal (che azzera productToDelete)
+            const productIdToDelete = productToDelete;
+            closeDeleteModal();
+            await deleteProductById(productIdToDelete);
+          } else {
+            console.error('❌ No product ID found in productToDelete variable!');
+          }
+        });
+      }
+
+      // Logout button
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          if (confirm('Sei sicuro di voler uscire?')) {
+            try {
+              const response = await fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include'
+              });
+
+              if (response.ok) {
+                window.location.href = '/admin/login';
+              } else {
+                alert('Errore durante il logout');
+              }
+            } catch (error) {
+              console.error('Logout error:', error);
+              alert('Errore durante il logout');
+            }
+          }
+        });
+      }
+
+    });
+  </script>
+
+  <style>
+    /* Nascondi completamente la navbar del frontend nelle pagine admin */
+    body nav,
+    header nav,
+    .navbar,
+    nav:not(.admin-nav) {
+      display: none !important;
+      visibility: hidden !important;
+      position: absolute !important;
+      left: -9999px !important;
+      z-index: -1 !important;
+    }
+    
+    /* Assicurati che i contenuti admin siano visibili */
+    .admin-nav,
+    nav.admin-nav {
+      display: flex !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 1000 !important;
+    }
+
+    /* 🌊 GLASSMORPHISM EFFECTS */
+    .backdrop-blur-xl {
+      backdrop-filter: blur(16px);
+    }
+    
+    .backdrop-blur-sm {
+      backdrop-filter: blur(4px);
+    }
+
+    /* 🎯 PREMIUM FOCUS STYLES */
+    .focus\:ring-0:focus {
+      --tw-ring-shadow: 0 0 #0000;
+      box-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    }
+
+    /* 💫 HOVER ANIMATIONS */
+    .group:hover .group-hover\:scale-105 {
+      transform: scale(1.05);
+    }
+
+    .group:hover .group-hover\:text-blue-600 {
+      color: #2563eb;
+    }
+
+    /* 📱 LINE CLAMP */
+    .line-clamp-1 {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+    }
+
+    /* 🎯 PREMIUM SHADOWS */
+    .shadow-xl {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .hover\:shadow-2xl:hover {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    /* 🔥 PREMIUM BUTTON EFFECTS */
+    .hover\:-translate-y-0\.5:hover {
+      transform: translateY(-2px);
+    }
+
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+
+    /* 🎭 MODAL ANIMATIONS */
+    .modal-enter {
+      animation: modalEnter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes modalEnter {
+      0% {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+  </style>
+</Layout>

@@ -1,0 +1,67 @@
+---
+// InfoSection.astro
+export interface Props {
+  title?: string;
+  leftText?: string;
+  rightText?: string;
+}
+
+const { 
+  title = "Ci integriamo nei processi aziendali per gestire in modo strutturato quelle attività operative che spesso rimangono indietro: formazione, immagine, sicurezza, forniture.",
+  leftText = "Ci integriamo nei processi aziendali per gestire in modo strutturato quelle attività operative che spesso rimangono indietro: formazione, immagine, sicurezza, forniture.",
+  rightText = "Il nostro obiettivo è dare continuità e qualità anche a ciò che, nella routine industriale, non trova mai abbastanza spazio per essere organizzato davvero."
+} = Astro.props;
+---
+
+<section class="relative bg-gradient-to-b from-gray-50 to-white w-full px-4 pt-16 md:pt-24">
+  <div class="relative mx-auto max-w-7xl">
+    <div 
+      class="relative overflow-hidden rounded-[25px] bg-blue-600 px-8 py-24 md:px-16 md:py-24"
+      style="background-image: url('/images/bg-mission.svg'); background-size: 60% auto; background-position: center; background-repeat: no-repeat;"
+    >
+      <div class="absolute inset-0 bg-brand/50"></div>
+      <!-- Overlay opzionale per migliorare la leggibilità del testo -->
+      <div class="absolute inset-0 bg-blue-600/70 rounded-[25px]"></div>
+      
+      <!-- Contenuto -->
+      <div class="relative z-10 mx-auto max-w-4xl text-center">
+        <h2 class="mb-12 text-2xl font-light leading-relaxed text-white md:text-3xl lg:text-4xl">
+          {title}
+        </h2>
+        
+        <!-- Due testi affiancati -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div class="text-left">
+            <p class="text-base md:text-lg font-light text-white/90 leading-relaxed">
+              {leftText}
+            </p>
+          </div>
+          
+          <div class="text-left">
+            <p class="text-base md:text-lg font-light text-white/90 leading-relaxed">
+              {rightText}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Stili aggiuntivi se necessari */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Su mobile i testi sono uno sotto l'altro */
+  @media (max-width: 767px) {
+    .grid {
+      gap: 2rem;
+    }
+  }
+</style>    

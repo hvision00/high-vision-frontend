@@ -1,0 +1,263 @@
+---
+// src/pages/admin/login.astro - VERSIONE TYPESCRIPT SAFE
+---
+
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - High Vision</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200">
+  <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      
+      <!-- Header -->
+      <div class="text-center">
+        <div class="mx-auto h-16 w-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+          <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">
+          Dashboard Admin
+        </h2>
+        <p class="text-gray-600">
+          Accedi al pannello di gestione High Vision
+        </p>
+      </div>
+
+      <!-- Login Form -->
+      <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+        <form id="loginForm" class="space-y-6">
+          
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+              Email Address
+            </label>
+            <input 
+              id="email" 
+              name="email" 
+              type="email" 
+              required 
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-500"
+              placeholder="admin@highvision.com"
+            />
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+              Password
+            </label>
+            <input 
+              id="password" 
+              name="password" 
+              type="password" 
+              required 
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-900 placeholder-gray-500"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <!-- Remember Me -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input 
+                id="remember" 
+                name="remember" 
+                type="checkbox" 
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label for="remember" class="ml-2 block text-sm text-gray-700">
+                Ricordami per 90 giorni
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            id="submitBtn"
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span id="submitText">Accedi alla Dashboard</span>
+            <svg id="loadingSpinner" class="hidden animate-spin -mr-1 ml-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+
+          <!-- Error Message -->
+          <div id="errorMessage" class="hidden p-4 bg-red-50 border border-red-200 rounded-xl">
+            <div class="flex">
+              <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div class="ml-3">
+                <p class="text-sm text-red-700" id="errorText"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success Message -->
+          <div id="successMessage" class="hidden p-4 bg-green-50 border border-green-200 rounded-xl">
+            <div class="flex">
+              <svg class="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <div class="ml-3">
+                <p class="text-sm text-green-700">Login effettuato! Reindirizzamento in corso...</p>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center text-sm text-gray-500">
+        <p>© 2025 High Vision SRL. Dashboard riservata al personale autorizzato.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 🚀 LOGIN FORM HANDLER - TYPESCRIPT SAFE VERSION
+    
+    // ✅ Safe element getters with type guards
+    function getElement<T extends HTMLElement>(id: string): T | null {
+      return document.getElementById(id) as T | null;
+    }
+
+    function getFormElement(id: string): HTMLFormElement | null {
+      return document.getElementById(id) as HTMLFormElement | null;
+    }
+
+    function getButtonElement(id: string): HTMLButtonElement | null {
+      return document.getElementById(id) as HTMLButtonElement | null;
+    }
+
+    // ✅ Get elements with proper typing
+    const form = getFormElement('loginForm');
+    const submitBtn = getButtonElement('submitBtn');
+    const submitText = getElement<HTMLSpanElement>('submitText');
+    const loadingSpinner = getElement<HTMLElement>('loadingSpinner');
+    const errorMessage = getElement<HTMLDivElement>('errorMessage');
+    const errorText = getElement<HTMLParagraphElement>('errorText');
+    const successMessage = getElement<HTMLDivElement>('successMessage');
+
+    // API Base URL
+    const API_BASE = 'http://localhost:3000/api';
+
+    // ✅ Safe form submission with null checks
+    if (form) {
+      form.addEventListener('submit', async (e: Event) => {
+        e.preventDefault();
+        
+        // ✅ Safe form data extraction
+        const formData = new FormData(form);
+        const email = formData.get('email')?.toString() || '';
+        const password = formData.get('password')?.toString() || '';
+        const remember = formData.get('remember') === 'on';
+
+        // ✅ Safe UI state management
+        if (errorMessage) errorMessage.classList.add('hidden');
+        if (successMessage) successMessage.classList.add('hidden');
+        
+        // ✅ Safe loading state
+        if (submitBtn) submitBtn.disabled = true;
+        if (submitText) submitText.textContent = 'Accesso in corso...';
+        if (loadingSpinner) loadingSpinner.classList.remove('hidden');
+
+        try {
+        // console.log('🔐 Attempting login...', { email, remember });
+          
+          const response = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+              email,
+              password,
+              remember
+            })
+          });
+
+          const data = await response.json();
+        // console.log('📡 Login response:', data);
+
+          if (data.success) {
+            // ✅ Safe success handling
+            if (successMessage) successMessage.classList.remove('hidden');
+            
+            // Store user info in localStorage for the dashboard
+            localStorage.setItem('highvision_user', JSON.stringify(data.user));
+            
+        // console.log('✅ Login successful, redirecting...');
+            
+            // Redirect to dashboard after 1 second
+            setTimeout(() => {
+              window.location.href = '/admin/dashboard';
+            }, 1000);
+            
+          } else {
+            throw new Error(data.error || 'Login failed');
+          }
+
+        } catch (error: unknown) {
+          console.error('❌ Login error:', error);
+          
+          // ✅ Safe error handling with type checking
+          const errorStr = error instanceof Error ? error.message : 'Errore durante il login. Riprova.';
+          
+          if (errorText) errorText.textContent = errorStr;
+          if (errorMessage) errorMessage.classList.remove('hidden');
+          
+        } finally {
+          // ✅ Safe reset of loading state
+          if (submitBtn) submitBtn.disabled = false;
+          if (submitText) submitText.textContent = 'Accedi alla Dashboard';
+          if (loadingSpinner) loadingSpinner.classList.add('hidden');
+        }
+      });
+    }
+
+    // 🔍 Check if already logged in
+    window.addEventListener('load', async () => {
+      // console.log('🔍 Checking authentication status...');
+      
+      try {
+        const response = await fetch(`${API_BASE}/auth/status`, {
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+      // console.log('📊 Auth status:', data);
+        
+        if (data.success && data.authenticated) {
+        // console.log('✅ Already logged in, redirecting...');
+          window.location.href = '/admin/dashboard';
+        }
+        
+      } catch (error: unknown) {
+      // console.log('ℹ️ Not authenticated, showing login form');
+      }
+    });
+  </script>
+
+</body>
+</html>

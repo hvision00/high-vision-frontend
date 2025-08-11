@@ -1,0 +1,33 @@
+---
+// pages/chi-siamo.astro
+import Layout from '../layouts/Layout.astro';
+import AboutSection from '../components/About/AboutSection/AboutSection.astro';
+import AboutContentSection from '../components/About/AboutContentSection/AboutContentSection.astro';
+import InfoSection from '../components/About/InfoSection/InfoSection.astro';
+import Newsletter from '../components/Newsletter/Newsletter.astro';
+import Footer from '../components/Footer/Footer.astro';
+
+// Usa il layout aggiornato con tema dark per la navbar
+---
+
+<Layout navbarTheme="dark" title="Chi Siamo - High Vision">
+  <AboutSection />
+
+  <AboutContentSection 
+  title="Una collaborazione che unisce esperienza e visione operativa"
+  highlightedWords={["missione", "innovazione"]}
+  leftDescription="Collaboriamo attivamente con VF Group, realtà con oltre 30 anni di esperienza nel settore e un team di professionisti altamente qualificati. Questa partnership ci permette di integrare know-how consolidato con un approccio giovane e organizzato, garantendo ai nostri clienti soluzioni affidabili, complete e sempre aggiornate alle evoluzioni del mercato."
+  imageUrl="/images/about/network-image.jpg"
+  imageAlt="Il nostro team"
+/>
+
+<InfoSection 
+  title="Un partner operativo per presidiare ogni area dell’impresa industriale"
+  leftText="Affianchiamo le aziende nella gestione di ambiti essenziali come sicurezza, formazione, immagine e forniture, con un approccio strutturato, trasparente e misurabile." 
+  rightText="Il nostro lavoro è garantire continuità, ordine e qualità nei processi che richiedono metodo, responsabilità e visione tecnica, collaborando da pari con chi fa impresa ogni giorno."
+/>
+
+<Newsletter />
+
+<Footer />
+</Layout>

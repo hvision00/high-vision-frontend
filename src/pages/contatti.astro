@@ -1,0 +1,24 @@
+---
+// src/pages/form-info.astro
+import Layout from '../layouts/Layout.astro';
+import { ContactForm } from '../components/ContactForm/ContactForm';
+import Footer from '../components/Footer/Footer.astro';
+---
+
+<Layout navbarTheme="dark" title="Contatti - High Vision">
+  <ContactForm client:load />
+  <Footer />
+</Layout>
+
+<style>
+  /* Assicura uno scrolling fluido */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Migliora la leggibilità del testo */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+</style>

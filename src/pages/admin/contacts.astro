@@ -1,0 +1,857 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Gestione Contatti CRM - High Vision Admin">
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <!-- 🎨 PREMIUM HEADER WITH GLASSMORPHISM -->
+    <div class="bg-white/80 backdrop-blur-xl shadow-xl border-b border-white/20 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-6">
+            <!-- Back Navigation -->
+            <a href="/admin/dashboard" class="group flex items-center space-x-2 text-green-600 hover:text-green-700 transition-all duration-200">
+              <div class="w-8 h-8 bg-green-100 rounded-2xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </div>
+              <span class="font-medium">Dashboard</span>
+            </a>
+            
+            <!-- Page Title -->
+            <div class="flex items-center space-x-4">
+              <div class="w-1 h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></div>
+              <div>
+                <h1 class="text-2xl font-bold text-gray-900">CRM Contatti</h1>
+                <p class="text-sm text-gray-500 mt-1">Gestisci i tuoi clienti e lead</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Navigation & Actions -->
+          <div class="flex items-center space-x-4">
+            <!-- Premium Navigation -->
+            <nav class="admin-nav hidden lg:flex items-center space-x-2 bg-white/60 rounded-2xl p-2 backdrop-blur-sm">
+              <a href="/admin/dashboard" class="flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200">
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span class="font-medium">Dashboard</span>
+              </a>
+              <a href="/admin/products" class="flex items-center space-x-2 px-4 py-2 rounded-xl text-gray-600 hover:text-orange-600 hover:bg-orange-50 transition-all duration-200">
+                <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                <span class="font-medium">Prodotti</span>
+              </a>
+              <div class="flex items-center space-x-2 px-4 py-2 rounded-xl text-green-600 bg-green-50">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span class="font-medium">Contatti</span>
+              </div>
+
+            </nav>
+            
+            <!-- Logout Button -->
+            <button id="logout-btn" class="group flex items-center space-x-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2.5 rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span class="font-medium">Logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 🎨 PREMIUM MAIN CONTENT -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-8 space-y-8">
+      
+      <!-- Loading State -->
+      <div id="loading-state" class="flex flex-col justify-center items-center py-20">
+        <div class="w-16 h-16 border-4 border-green-200 border-t-green-600 rounded-full animate-spin mb-4"></div>
+        <p class="text-gray-600 font-medium">Caricamento contatti CRM...</p>
+        <p class="text-sm text-gray-400 mt-1">Attendere prego</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="hidden text-center py-20">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Errore nel caricamento</h3>
+        <p id="error-message" class="text-gray-600 mb-6">Non è stato possibile caricare i contatti</p>
+        <button id="retry-btn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-2xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+          Riprova
+        </button>
+      </div>
+
+      <!-- 📊 STATS OVERVIEW -->
+      <div id="stats-section" class="hidden grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Totale Contatti</p>
+              <p id="total-contacts" class="text-3xl font-bold text-gray-900 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Clienti Convertiti</p>
+              <p id="converted-contacts" class="text-3xl font-bold text-green-600 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Lead Attivi</p>
+              <p id="pending-contacts" class="text-3xl font-bold text-orange-600 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 font-medium">Questo Mese</p>
+              <p id="monthly-contacts" class="text-3xl font-bold text-purple-600 mt-2">-</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center">
+              <div class="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🔍 PREMIUM FILTERS & SEARCH -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8">
+        <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
+          
+          <!-- Search & Filters -->
+          <div class="flex-1 flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            <!-- Search Input -->
+            <div class="flex-1 relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Cerca contatti per nome, email, azienda..."
+                class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-green-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-900 placeholder-gray-500"
+              />
+            </div>
+            
+            <!-- Status Filter -->
+            <select id="status-filter" class="px-6 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-green-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-700 font-medium min-w-[160px]">
+              <option value="">Tutti gli stati</option>
+              <option value="new">🔵 Nuovo</option>
+              <option value="contacted">🟡 Contattato</option>
+              <option value="qualified">🟢 Qualificato</option>
+              <option value="proposal">🟣 Proposta</option>
+              <option value="converted">✅ Convertito</option>
+              <option value="lost">🔴 Perso</option>
+              <option value="archived">📁 Archiviato</option>
+            </select>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="flex items-center space-x-4">
+            <button
+              id="search-btn"
+              class="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-2xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span>Cerca</span>
+            </button>
+            <button
+              id="clear-filters-btn"
+              class="flex items-center space-x-2 bg-gray-500 hover:bg-gray-600 text-white px-6 py-4 rounded-2xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📋 PREMIUM CONTACTS TABLE -->
+      <div id="contacts-section" class="hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 overflow-hidden">
+        
+        <!-- Table Header -->
+        <div class="bg-gradient-to-r from-gray-50 to-green-50 px-8 py-6 border-b border-gray-200">
+          <div class="grid grid-cols-12 gap-6 items-center text-sm font-semibold text-gray-700 uppercase tracking-wider">
+            <div class="col-span-3">Cliente</div>
+            <div class="col-span-2">Contatto</div>
+            <div class="col-span-2">Azienda</div>
+            <div class="col-span-2">Status</div>
+            <div class="col-span-2">Data</div>
+            <div class="col-span-1 text-right">Azioni</div>
+          </div>
+        </div>
+        
+        <!-- Contacts List -->
+        <div id="contacts-list" class="divide-y divide-gray-100">
+          <!-- Contacts will be inserted here -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 🎭 STATUS UPDATE MODAL -->
+  <div id="status-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95 opacity-0 modal-enter">
+      
+      <!-- Header -->
+      <div class="relative bg-gradient-to-r from-green-50 to-blue-50 p-8 rounded-t-3xl border-b border-green-100">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Aggiorna Status Cliente</h3>
+            <p class="text-green-600 text-sm mt-1">Modifica lo stato del contatto</p>
+          </div>
+        </div>
+        
+        <!-- Close Button -->
+        <button class="absolute top-6 right-6 w-8 h-8 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110" onclick="closeStatusModal()">
+          <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Content -->
+      <div class="p-8 space-y-6">
+        <div class="text-center">
+          <p class="text-gray-700 mb-2">Aggiorna lo status per il cliente:</p>
+          <p id="status-contact-name" class="font-semibold text-gray-900 text-lg"></p>
+        </div>
+        
+        <!-- Status Selection -->
+        <div class="space-y-3">
+          <label class="block text-sm font-medium text-gray-700">Nuovo Status:</label>
+          <select id="new-status" class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-green-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-700 font-medium">
+            <option value="new">🔵 Nuovo</option>
+            <option value="contacted">🟡 Contattato</option>
+            <option value="qualified">🟢 Qualificato</option>
+            <option value="proposal">🟣 Proposta</option>
+            <option value="converted">✅ Convertito</option>
+            <option value="lost">🔴 Perso</option>
+            <option value="archived">📁 Archiviato</option>
+          </select>
+        </div>
+        
+        <!-- Notes -->
+        <div class="space-y-3">
+          <label class="block text-sm font-medium text-gray-700">Note (opzionale):</label>
+          <textarea id="status-notes" rows="3" class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-2xl focus:border-green-400 focus:bg-white focus:ring-0 transition-all duration-200 text-gray-700" placeholder="Aggiungi note sul cambio di status..."></textarea>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex items-center justify-end space-x-3 pt-4">
+          <button onclick="closeStatusModal()" 
+                  class="px-6 py-3 border-2 border-gray-200 text-gray-700 rounded-2xl font-medium hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-200">
+            Annulla
+          </button>
+          <button id="confirm-status-btn" 
+                  class="px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div class="flex items-center space-x-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Aggiorna Status</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    let currentContacts: any[] = [];
+    let currentContactId: string | null = null;
+    let currentFilters: Record<string, string> = {};
+
+    // Initialize the page
+    async function initializePage() {
+      console.log('🚀 Initializing CRM contacts page...');
+      try {
+        await loadContacts();
+        setupEventListeners();
+        setupNavbarRemoval();
+      } catch (error) {
+        console.error('❌ Error initializing page:', error);
+        showError('Errore durante l\'inizializzazione della pagina CRM');
+      }
+    }
+
+    // Load contacts from API
+    async function loadContacts() {
+      console.log('📡 Loading contacts from API...');
+      
+      try {
+        // Costruisci URL con parametri di ricerca
+        const params = new URLSearchParams();
+        Object.keys(currentFilters).forEach(key => {
+          if (currentFilters[key]) {
+            params.append(key, currentFilters[key]);
+          }
+        });
+        
+        const url = `${API_BASE}/contacts${params.toString() ? '?' + params.toString() : ''}`;
+        console.log('🔍 Request URL:', url);
+        
+        const response = await fetch(url, {
+          credentials: 'include'
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('✅ API Response:', data);
+
+        if (data.success && data.data) {
+          currentContacts = data.data;
+          updateStats();
+          renderContacts();
+          showContactsSection();
+        } else {
+          throw new Error(data.error || 'Formato dati non valido');
+        }
+
+      } catch (error) {
+        console.error('❌ Error loading contacts:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Errore sconosciuto';
+        showError(`Errore nel caricamento dei contatti: ${errorMessage}`);
+      } finally {
+        hideLoading();
+      }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Search functionality
+      const searchBtn = document.getElementById('search-btn');
+      const searchInput = document.getElementById('search-input') as HTMLInputElement;
+      const statusFilter = document.getElementById('status-filter') as HTMLSelectElement;
+      
+      // Funzione per eseguire la ricerca
+      function performSearch() {
+        const search = searchInput?.value.trim() || '';
+        const status = statusFilter?.value || '';
+        
+        console.log('🔍 Performing search:', { search, status });
+        
+        currentFilters = {};
+        if (search) currentFilters['search'] = search;
+        if (status) currentFilters['status'] = status;
+        
+        loadContacts();
+      }
+      
+      // Click sul bottone di ricerca
+      if (searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+      }
+      
+      // Ricerca quando si preme Invio nell'input
+      if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            performSearch();
+          }
+        });
+      }
+      
+      // Ricerca quando cambia il filtro status
+      if (statusFilter) {
+        statusFilter.addEventListener('change', performSearch);
+      }
+      
+      // Bottone per pulire i filtri
+      const clearFiltersBtn = document.getElementById('clear-filters-btn');
+      if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', () => {
+          console.log('🧹 Clearing filters');
+          
+          // Reset dei campi
+          if (searchInput) searchInput.value = '';
+          if (statusFilter) statusFilter.value = '';
+          
+          // Reset dei filtri
+          currentFilters = {};
+          
+          // Ricarica tutti i contatti
+          loadContacts();
+        });
+      }
+
+      // Retry button
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+          loadContacts();
+        });
+      }
+
+      // Status update modal
+      const confirmStatusBtn = document.getElementById('confirm-status-btn');
+      if (confirmStatusBtn) {
+        confirmStatusBtn.addEventListener('click', updateContactStatus);
+      }
+
+      // Event delegation for manage buttons
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const manageBtn = target.closest('.manage-btn') as HTMLElement;
+        
+        if (manageBtn) {
+          const contactId = manageBtn.getAttribute('data-contact-id');
+          const contactName = manageBtn.getAttribute('data-contact-name');
+          const contactStatus = manageBtn.getAttribute('data-contact-status');
+          
+          if (contactId && contactName && contactStatus) {
+            console.log('🎯 Opening status modal for:', { contactId, contactName, contactStatus });
+            openStatusModal(contactId, contactName, contactStatus);
+          }
+        }
+      });
+
+      // Logout button
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          if (confirm('Sei sicuro di voler uscire?')) {
+            try {
+              const response = await fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include'
+              });
+
+              if (response.ok) {
+                window.location.href = '/admin/login';
+              } else {
+                alert('Errore durante il logout');
+              }
+            } catch (error) {
+              console.error('Logout error:', error);
+              alert('Errore durante il logout');
+            }
+          }
+        });
+      }
+    }
+
+    // CRM Status Management Functions
+    async function updateContactStatus() {
+      if (!currentContactId) return;
+
+      const newStatusEl = document.getElementById('new-status') as HTMLSelectElement;
+      const notesEl = document.getElementById('status-notes') as HTMLTextAreaElement;
+      
+      if (!newStatusEl || !notesEl) return;
+      
+      const newStatus = newStatusEl.value;
+      const notes = notesEl.value;
+
+      if (!newStatus) {
+        alert('⚠️ Seleziona un nuovo status');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/contacts/${currentContactId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ 
+            status: newStatus,
+            notes: notes || undefined
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('✅ Status aggiornato con successo!');
+          closeStatusModal();
+          loadContacts(); // Reload to update the list
+        } else {
+          alert(`❌ Errore: ${result.error}`);
+        }
+      } catch (error) {
+        console.error('❌ Error updating status:', error);
+        alert('❌ Errore nell\'aggiornamento dello status');
+      }
+    }
+
+    // Modal Management Functions
+    function openStatusModal(contactId: string, contactName: string, currentStatus: string) {
+      console.log('🎯 Opening status modal for:', { contactId, contactName, currentStatus });
+      
+      currentContactId = contactId;
+      const modal = document.getElementById('status-modal');
+      const contactNameEl = document.getElementById('status-contact-name');
+      
+      if (!modal) {
+        console.error('❌ Status modal not found!');
+        return;
+      }
+      
+      const statusSelect = document.getElementById('new-status') as HTMLSelectElement;
+      const notesTextarea = document.getElementById('status-notes') as HTMLTextAreaElement;
+      
+      if (contactNameEl) {
+        contactNameEl.textContent = `"${contactName}"`;
+      }
+      
+      if (statusSelect) {
+        statusSelect.value = currentStatus || 'new';
+      }
+      
+      if (notesTextarea) {
+        notesTextarea.value = '';
+      }
+      
+      console.log('👁️ Showing status modal...');
+      modal.classList.remove('hidden');
+      
+      // Trigger animation
+      const modalContent = modal.querySelector('.transform');
+      if (modalContent) {
+        modalContent.classList.remove('modal-enter');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        
+        requestAnimationFrame(() => {
+          modalContent.classList.remove('scale-95', 'opacity-0');
+          modalContent.classList.add('modal-enter');
+        });
+      }
+    }
+    
+    function closeStatusModal() {
+      currentContactId = null;
+      const modal = document.getElementById('status-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    }
+    
+    // Make functions global
+    (window as any).closeStatusModal = closeStatusModal;
+    (window as any).openStatusModal = openStatusModal;
+
+    // Update statistics
+    function updateStats() {
+      const total = currentContacts.length;
+      const converted = currentContacts.filter(c => c.status === 'converted').length;
+      const pending = currentContacts.filter(c => c.status === 'new').length;
+      
+      // Calculate monthly contacts
+      const thisMonth = new Date();
+      thisMonth.setDate(1);
+      const monthly = currentContacts.filter(c => {
+        const contactDate = new Date(c.created_at);
+        return contactDate >= thisMonth;
+      }).length;
+
+      const totalEl = document.getElementById('total-contacts');
+      const convertedEl = document.getElementById('converted-contacts');
+      const pendingEl = document.getElementById('pending-contacts');
+      const monthlyEl = document.getElementById('monthly-contacts');
+      
+      if (totalEl) totalEl.textContent = total.toString();
+      if (convertedEl) convertedEl.textContent = converted.toString();
+      if (pendingEl) pendingEl.textContent = pending.toString();
+      if (monthlyEl) monthlyEl.textContent = monthly.toString();
+    }
+
+    // 🎨 PREMIUM CONTACTS RENDERING
+    function renderContacts() {
+      const contactsList = document.getElementById('contacts-list');
+      
+      if (!contactsList) return;
+      
+      if (currentContacts.length === 0) {
+        contactsList.innerHTML = `
+          <div class="text-center py-20">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Nessun contatto trovato</h3>
+            <p class="text-gray-600">Nessun cliente corrisponde ai filtri selezionati</p>
+          </div>
+        `;
+        return;
+      }
+
+      contactsList.innerHTML = currentContacts.map(contact => `
+        <div class="grid grid-cols-12 gap-6 items-center px-8 py-6 hover:bg-green-50/50 transition-all duration-200 group">
+          <!-- Cliente Info (3 cols) -->
+          <div class="col-span-3 flex items-center space-x-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-green-100 to-blue-100 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
+              <div class="w-2.5 h-2.5 bg-gradient-to-r from-green-500 to-blue-500 rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-gray-900 group-hover:text-green-600 transition-colors duration-200 truncate">${contact.name || 'Cliente Anonimo'}</h3>
+              <p class="text-xs text-gray-500 mt-1 truncate">${contact.product_interest || 'Nessun interesse specificato'}</p>
+            </div>
+          </div>
+          
+          <!-- Contatto (2 cols) -->
+          <div class="col-span-2 min-w-0">
+            <div class="text-sm font-medium text-gray-900 truncate">${contact.email || 'N/A'}</div>
+            ${contact.phone ? `<div class="text-xs text-gray-500 mt-1 truncate">${contact.phone}</div>` : '<div class="text-xs text-gray-400 mt-1">Nessun telefono</div>'}
+          </div>
+          
+          <!-- Azienda (2 cols) -->
+          <div class="col-span-2 min-w-0">
+            <div class="text-sm font-medium text-gray-900 truncate">${contact.company || 'N/A'}</div>
+            ${contact.role ? `<div class="text-xs text-gray-500 mt-1 truncate">${contact.role}</div>` : '<div class="text-xs text-gray-400 mt-1">Nessun ruolo</div>'}
+          </div>
+          
+          <!-- Status (2 cols) -->
+          <div class="col-span-2">
+            <div class="inline-flex items-center px-2.5 py-1 rounded-2xl text-xs font-medium ${getStatusColor(contact.status)}">
+              <div class="w-2 h-2 rounded-full mr-1.5 ${getStatusDotColor(contact.status)} flex-shrink-0"></div>
+              <span class="truncate">${getStatusText(contact.status)}</span>
+            </div>
+          </div>
+          
+          <!-- Data (2 cols) -->
+          <div class="col-span-2">
+            <div class="text-sm text-gray-600">${formatDate(contact.created_at)}</div>
+            <div class="text-xs text-gray-400 mt-1">Registrato</div>
+          </div>
+          
+          <!-- Azioni (1 col) -->
+          <div class="col-span-1 flex justify-end">
+            <button 
+              class="manage-btn flex items-center space-x-1.5 px-3 py-2 bg-green-50 hover:bg-green-100 text-green-600 rounded-xl font-medium transition-all duration-200 hover:scale-105 hover:shadow-md text-xs"
+              data-contact-id="${contact.id}"
+              data-contact-name="${contact.name || 'Cliente Anonimo'}"
+              data-contact-status="${contact.status}"
+            >
+              <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              <span class="hidden lg:block">Gestisci</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Utility functions
+    function getStatusColor(status: string) {
+      const colors = {
+        'new': 'bg-blue-100 text-blue-700 border border-blue-200',
+        'contacted': 'bg-yellow-100 text-yellow-700 border border-yellow-200',
+        'qualified': 'bg-green-100 text-green-700 border border-green-200',
+        'proposal': 'bg-purple-100 text-purple-700 border border-purple-200',
+        'converted': 'bg-emerald-100 text-emerald-700 border border-emerald-200',
+        'lost': 'bg-red-100 text-red-700 border border-red-200',
+        'archived': 'bg-gray-100 text-gray-700 border border-gray-200'
+      };
+      return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700 border border-gray-200';
+    }
+
+    function getStatusDotColor(status: string) {
+      const colors = {
+        'new': 'bg-blue-500',
+        'contacted': 'bg-yellow-500',
+        'qualified': 'bg-green-500',
+        'proposal': 'bg-purple-500',
+        'converted': 'bg-emerald-500',
+        'lost': 'bg-red-500',
+        'archived': 'bg-gray-500'
+      };
+      return colors[status as keyof typeof colors] || 'bg-gray-500';
+    }
+
+    function getStatusText(status: string) {
+      const texts = {
+        'new': 'Nuovo',
+        'contacted': 'Contattato',
+        'qualified': 'Qualificato',
+        'proposal': 'Proposta',
+        'converted': 'Convertito',
+        'lost': 'Perso',
+        'archived': 'Archiviato'
+      };
+      return texts[status as keyof typeof texts] || status;
+    }
+
+    function formatDate(dateStr: string) {
+      try {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('it-IT');
+      } catch (error) {
+        return 'Data non valida';
+      }
+    }
+
+    function hideLoading() {
+      const loadingEl = document.getElementById('loading-state');
+      if (loadingEl) loadingEl.classList.add('hidden');
+    }
+
+    function showError(message: string) {
+      const errorMessageEl = document.getElementById('error-message');
+      const errorStateEl = document.getElementById('error-state');
+      if (errorMessageEl) errorMessageEl.textContent = message;
+      if (errorStateEl) errorStateEl.classList.remove('hidden');
+    }
+
+    function showContactsSection() {
+      const statsEl = document.getElementById('stats-section');
+      const contactsEl = document.getElementById('contacts-section');
+      if (statsEl) statsEl.classList.remove('hidden');
+      if (contactsEl) contactsEl.classList.remove('hidden');
+    }
+
+    // RIMUOVI FISICAMENTE LA NAVBAR DEL FRONTEND
+    function removeMainNavbar() {
+      const navSelectors = [
+        'body > nav',
+        'body > header nav', 
+        'nav:not(.admin-nav)',
+        '[data-navbar]',
+        '.navbar:not(.admin-nav)'
+      ];
+      
+      navSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(el => {
+          if (!el.classList.contains('admin-nav')) {
+            el.remove();
+          }
+        });
+      });
+    }
+
+    // INTERCETTA TUTTI GLI EVENTI DI NAVIGAZIONE
+    function setupNavbarRemoval() {
+      const intervalId = setInterval(removeMainNavbar, 1000);
+      window.addEventListener('pageshow', removeMainNavbar);
+      window.addEventListener('popstate', removeMainNavbar);
+      window.addEventListener('hashchange', removeMainNavbar);
+      window.addEventListener('beforeunload', () => clearInterval(intervalId));
+      
+      const observer = new MutationObserver(() => removeMainNavbar());
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
+
+  <style>
+    /* Nascondi completamente la navbar del frontend nelle pagine admin */
+    body nav,
+    header nav,
+    .navbar,
+    nav:not(.admin-nav) {
+      display: none !important;
+      visibility: hidden !important;
+      position: absolute !important;
+      left: -9999px !important;
+      z-index: -1 !important;
+    }
+    
+    /* Assicurati che i contenuti admin siano visibili */
+    .admin-nav,
+    nav.admin-nav {
+      display: flex !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 1000 !important;
+    }
+
+    /* 🌊 GLASSMORPHISM EFFECTS */
+    .backdrop-blur-xl {
+      backdrop-filter: blur(16px);
+    }
+    
+    .backdrop-blur-sm {
+      backdrop-filter: blur(4px);
+    }
+
+    /* 🎯 PREMIUM FOCUS STYLES */
+    .focus\:ring-0:focus {
+      --tw-ring-shadow: 0 0 #0000;
+      box-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    }
+
+    /* 💫 HOVER ANIMATIONS */
+    .group:hover .group-hover\:scale-105 {
+      transform: scale(1.05);
+    }
+
+    .group:hover .group-hover\:text-green-600 {
+      color: #059669;
+    }
+
+    /* 🎯 PREMIUM SHADOWS */
+    .shadow-xl {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .hover\:shadow-2xl:hover {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    /* 🔥 PREMIUM BUTTON EFFECTS */
+    .hover\:-translate-y-0\.5:hover {
+      transform: translateY(-2px);
+    }
+
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+
+    /* 🎭 MODAL ANIMATIONS */
+    .modal-enter {
+      animation: modalEnter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes modalEnter {
+      0% {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+  </style>
+</Layout>

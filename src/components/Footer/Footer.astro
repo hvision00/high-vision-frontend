@@ -1,0 +1,119 @@
+---
+// Footer.astro - Footer aggiornato
+import logo from '../../assets/img/logo.png';
+---
+
+<footer class="bg-brand text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <!-- Colonna sinistra -->
+      <div class="space-y-6">
+        <!-- Logo -->
+        <div>
+          <img src={logo.src} alt="High Vision" class="h-24 w-auto mb-4" />
+        </div>
+        
+        <!-- Descrizione -->
+        <p class="text-gray-100 text-base leading-relaxed max-w-md">
+          High Vision fornisce soluzioni operative integrate a supporto delle aziende.
+        </p>
+      </div>
+      
+      <!-- Colonna destra -->
+      <div class="flex flex-col items-start md:items-end space-y-6">
+        <!-- Link di navigazione -->
+        <div class="flex flex-wrap gap-6 text-sm">
+          <!-- 🎯 MODIFICATO: Cambiato da button a link -->
+          <a 
+            href="/contatti"
+            class="text-white/80 hover:text-white transition-all duration-300 cursor-pointer uppercase tracking-wider font-medium hover:transform hover:-translate-y-0.5"
+          >
+            RICHIEDI INFORMAZIONI
+          </a>
+          <a href="/Assistenza" class="text-white/80 hover:text-white transition-colors">ASSISTENZA</a>
+          <a href="/faq" class="text-white/80 hover:text-white transition-colors">FAQ</a>
+        </div>
+        
+        <!-- Social media -->
+        <div class="flex gap-6 text-sm">
+          <a href="#" class="text-white/80 hover:text-white transition-colors">INSTAGRAM</a>
+          <a href="#" class="text-white/80 hover:text-white transition-colors">FACEBOOK</a>
+          <a href="#" class="text-white/80 hover:text-white transition-colors">LINKEDIN</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Divider -->
+    <div class="border-t border-white/20 mt-12 pt-8">
+      <!-- Bottom section -->
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <!-- Copyright -->
+        <div class="text-sm text-white/60">
+          © High Vision S.r.l. Tutti i diritti riservati
+        </div>
+        
+        <!-- Legal links -->
+        <div class="flex flex-wrap gap-6 text-sm">
+          <a href="/privacy-policy" class="text-white/60 hover:text-white transition-colors">Privacy Policy</a>
+          <a href="/termini-condizioni" class="text-white/60 hover:text-white transition-colors">Termini e condizioni</a>
+          <a href="/cookie-policy" class="text-white/60 hover:text-white transition-colors">Cookie policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Ensure proper text rendering */
+  a {
+    text-decoration: none;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    footer {
+      text-align: center;
+    }
+    
+    .grid > div:first-child {
+      text-align: left;
+    }
+    
+    .grid > div:last-child {
+      align-items: flex-start;
+    }
+  }
+
+  /* 🎯 AGGIORNATO: Stili per il nuovo link "RICHIEDI INFORMAZIONI" */
+  a[href="/contatti"]:first-of-type {
+    position: relative;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    letter-spacing: inherit;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  
+  /* Hover effect migliorato */
+  a[href="/contatti"]:first-of-type:hover {
+    color: white !important;
+    transform: translateY(-1px);
+  }
+  
+  /* Effetto sottile di evidenziazione */
+  a[href="/contatti"]:first-of-type::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+    transition: width 0.3s ease;
+  }
+  
+  a[href="/contatti"]:first-of-type:hover::after {
+    width: 100%;
+  }
+</style>

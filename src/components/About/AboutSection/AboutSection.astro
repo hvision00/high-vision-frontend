@@ -1,0 +1,22 @@
+---
+// AboutSection.astro
+import TeamSlider from './AboutSection.tsx';
+---
+
+<section class="relative w-full bg-white py-24">
+  <div class="container mx-auto px-4">
+    <!-- Header Section -->
+    <div class="max-w-4xl mx-auto text-center mb-16">
+      <h1 class="text-2xl md:text-4xl lg:text-6xl text-brand max-w-4xl font-telegraf mb-6">
+        Il nostro team<br />
+        al tuo servizio
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+        Giovani professionisti con un metodo chiaro e un approccio operativo, che lavorano fianco a fianco alle aziende per rispondere alle esigenze concrete delle imprese.
+      </p>
+    </div>
+
+    <!-- Team Slider Component -->
+    <TeamSlider client:visible />
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+// src/pages/faq.astro
+import Layout from '../layouts/Layout.astro';
+import { FAQPage } from '../components/FAQ/FAQPage';
+import Footer from '../components/Footer/Footer.astro';
+---
+
+<Layout navbarTheme="dark" title="FAQ - Domande Frequenti - High Vision">
+  <FAQPage client:load />
+  <Footer />
+</Layout>
+
+<style>
+  /* Assicura animazioni fluide */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Migliora la leggibilità del testo */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Animazioni per apertura/chiusura FAQ */
+  @keyframes slide-in-from-top {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-in {
+    animation: slide-in-from-top 0.2s ease-out;
+  }
+</style>

@@ -1,0 +1,42 @@
+/* Animazioni personalizzate per lo slider infinito */
+@keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Classe per mettere in pausa l'animazione */
+  .pause {
+    animation-play-state: paused;
+  }
+  
+  /* Supporto per la pausa al hover */
+  .hover\:pause:hover {
+    animation-play-state: paused;
+  }
+  
+  /* Stili aggiuntivi per migliorare l'esperienza */
+  .partner-slider {
+    /* Assicura che l'animazione continui anche quando l'elemento esce dal viewport */
+    animation-fill-mode: both;
+    /* Evita il flickering durante l'animazione */
+    backface-visibility: hidden;
+    /* Ottimizza le prestazioni */
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Responsive design per lo slider */
+  @media (max-width: 768px) {
+    .partner-slider-container {
+      padding: 2rem 1rem;
+    }
+    
+    .partner-slider-item {
+      min-width: 120px;
+      height: 60px;
+    }
+  }

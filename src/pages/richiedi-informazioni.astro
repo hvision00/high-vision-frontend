@@ -1,0 +1,24 @@
+---
+// src/pages/richiedi-informazioni.astro
+import Layout from '../layouts/Layout.astro';
+import { RequestInfoForm } from '../components/RequestInfoForm/RequestInfoForm';
+import Footer from '../components/Footer/Footer.astro';
+---
+
+<Layout navbarTheme="dark" title="Richiedi Informazioni - High Vision">
+  <RequestInfoForm client:load />
+  <Footer />
+</Layout>
+
+<style>
+  /* Assicura uno scrolling fluido */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Migliora la leggibilità del testo */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+</style>

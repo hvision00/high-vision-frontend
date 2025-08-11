@@ -1,0 +1,18 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ProductDetailPage from '@/components/ProductDetail/ProductDetailPage';
+---
+
+<Layout title="Sicurezza e Protezione sul Lavoro">
+  <ProductDetailPage client:load category="sicurezza" isCategoryPage={true} />
+</Layout>
+
+<style is:global>
+  nav {
+    display: none !important;
+  }
+  
+  body {
+    background-color: #262626 !important;
+  }
+</style>

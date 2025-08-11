@@ -1,0 +1,14 @@
+---
+// ProductShowcase.astro
+import ProductShowcaseQwik from './ProductShowcaseQwik';
+
+export interface Props {
+  title?: string;
+}
+
+const { title = "La nostra gamma di prodotti e servizi" } = Astro.props;
+---
+
+<section id="product-showcase">
+  <ProductShowcaseQwik client:load title={title} />
+</section>

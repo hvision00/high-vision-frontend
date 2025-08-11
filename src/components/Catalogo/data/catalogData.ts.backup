@@ -1,0 +1,929 @@
+// src/components/Catalogo/data/catalogData.ts
+import type { Category, Subcategory, Product } from '../types/catalog.types';
+
+/**
+ * Lista dei referenti aziendali (4 persone del team)
+ */
+export const REFERENTI = {
+  MIRCO: 'Mirco Vitagliano',
+  GIORGIA: 'Giogia Vitagliano', 
+  MATTIA: 'Mattia Muzzin',
+  NICHOLAS: 'Nicholas Bellotto'
+} as const;
+
+/**
+ * Dati completi del catalogo prodotti
+ * Organizzati in 4 categorie principali con sottocategorie e prodotti
+ */
+export const catalogData: Category[] = [
+  {
+    id: 'immagine',
+    name: 'Immagine & Comunicazione',
+    description: 'Soluzioni complete per costruire e rafforzare l\'identità aziendale attraverso comunicazione visiva e branding professionale',
+    image: '/images/hero-immagine.jpg',
+    subcategories: [
+      {
+        id: 'sviluppo-web',
+        name: 'Sviluppo web',
+        description: 'Workwear e divise aziendali su misura per ogni settore',
+        products: [
+          {
+            id: 'sviluppo-web-base',
+            name: 'Sviluppo Sito Web Base',
+            description: 'Creazione di un sito web vetrina statico, ideale per piccole aziende o professionisti che vogliono presentarsi online con una presenza essenziale ma professionale.',
+            category: 'immagine',
+            subcategory: 'sviluppo-web',
+            image: '/images/catalogo/immagine/sviluppo-web/sviluppo-web-base.jpg',
+            price: 'Da €800',
+            features: ['Layout responsive', 'Design personalizzato', 'Fino a 5 pagine', 'Ottimizzazione SEO base', 'Hosting incluso (1 anno)'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            featured: false
+          },
+          {
+            id: 'sviluppo-web-avanzato',
+            name: 'Sviluppo Sito Web Avanzato',
+            description: 'Realizzazione di un sito web dinamico e completamente gestibile tramite CMS, con funzionalità aggiuntive e contenuti personalizzabili.',
+            category: 'immagine',
+            subcategory: 'sviluppo-web',
+            image: '/images/catalogo/immagine/sviluppo-web/sviluppo-web-avanzato.jpg',
+            price: 'Da €2.000',
+            features: ['CMS WordPress / custom', 'Pagine illimitate', 'Area blog o news', 'Ottimizzazione SEO avanzata', 'Integrazione con newsletter o CRM'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            badge: 'Bestseller',
+            featured: true
+          },
+          {
+            id: 'e-commerce',
+            name: 'Sviluppo E-commerce',
+            description: 'Progettazione e sviluppo di un sito e-commerce completo, per la vendita online di prodotti o servizi, con sistemi di pagamento integrati.',
+            category: 'immagine',
+            subcategory: 'sviluppo-web',
+            image: '/images/catalogo/immagine/sviluppo-web/e-commerce.jpg',
+            price: 'Da €3.000',
+            features: ['Catalogo prodotti illimitato', 'Carrello e checkout', 'Integrazione pagamento (Stripe, PayPal, etc.)', 'Gestione ordini e clienti', 'Multilingua e multivaluta'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            featured: false
+          },
+          {
+            id: 'interfaccia-admin',
+            name: 'Interfaccia Amministrativa Personalizzata',
+            description: 'Creazione di una dashboard per gestione interna di contenuti, utenti, ordini o altre funzionalità.',
+            category: 'immagine',
+            subcategory: 'sviluppo-web',
+            image: '/images/catalogo/immagine/sviluppo-web/interfaccia-admin.jpg',
+            price: 'Da €5.000',
+            features: ['Frontend ad alte prestazioni', 'Backend personalizzato', 'Automazioni tramite API', 'Autenticazione utenti', 'Supporto operativo'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            featured: false
+          },
+          {
+            id: 'landing-page',
+            name: 'Landing Page Professionale',
+            description: 'Sviluppo di una landing page ad alto tasso di conversione per promuovere servizi, prodotti o eventi specifici.',
+            category: 'immagine',
+            subcategory: 'sviluppo-web',
+            image: '/images/catalogo/immagine/sviluppo-web/landing-page.jpg',
+            price: 'Da €300',
+            features: ['Design su misura', 'Mobile-first', 'Form contatto / call-to-action', 'Ottimizzazione per campagne ADV', 'A/B Testing opzionale'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            featured: false
+          }
+        ]
+      },
+      {
+        id: 'abbigliamento personalizzato',
+        name: 'Abbigliamento personalizzato',
+        description: 'Ogni capo può essere personalizzato con loghi, grafiche o testi.',
+        products: [
+          {
+            id: 't-shirt-personalizzata',
+            name: 'T-shirt Personalizzata',
+            description: 'Maglietta in cotone o tessuto tecnico con personalizzazione (logo, testo o grafica), ideale per eventi, divise aziendali o merchandising.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/t-shirt-personalizzata.jpg',
+            price: 'Da €6,50',
+            features: ['Stampa serigrafica, digitale o ricamo', 'Diverse grammature e tagli', 'Taglie unisex e fitted', 'Disponibile in vari colori', '100% cotone o misto tecnico'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            badge: 'Bestseller',
+            featured: true
+          },
+          {
+            id: 'felpa-personalizzata',
+            name: 'Felpa Personalizzata',
+            description: 'Felpa con o senza cappuccio personalizzata con logo o design aziendale. Perfetta per uso aziendale informale o per promozione brand.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/felpa-personalizzata.jpg',
+            price: 'Da €15,00',
+            features: ['Modelli con zip o pullover', 'Stampa fronte/retro', 'Tessuto felpato o leggero', 'Ampia scelta colori e taglie', 'Possibilità di stampa a colori'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'polo-personalizzata',
+            name: 'Polo Personalizzata',
+            description: 'Polo elegante e versatile con logo aziendale ricamato o stampato. Ottima per uso lavorativo e divise formali.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/polo-personalizzata.jpg',
+            price: 'Da €12,00',
+            features: ['Tessuto piqué o tecnico', 'Ricamo o stampa', 'Uomo, donna, bambino', 'Look professionale', 'Lavaggio resistente'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'giubbino-personalizzato',
+            name: 'Giubbino Personalizzato',
+            description: 'Giacca leggera o invernale con personalizzazione del logo aziendale. Ideale per team outdoor, staff o eventi.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/giubbino-personalizzato.jpg',
+            price: 'Da €30,00',
+            features: ['Impermeabile o antivento', 'Personalizzazione lato cuore o totale', 'Tasche e zip funzionali', 'Varie taglie disponibili', 'Stile casual o tecnico'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'camicia-lavoro',
+            name: 'Camicia da Lavoro Personalizzata',
+            description: 'Camicia professionale con logo ricamato, adatta per showroom, reception, ristorazione e rappresentanza.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/camicia-lavoro.jpg',
+            price: 'Da €18,00',
+            features: ['Manica lunga o corta', 'Tessuto easy-care', 'Ricamo elegante lato cuore', 'Tagli uomo e donna', 'Aspetto curato'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'grembiule-personalizzato',
+            name: 'Grembiule Personalizzato',
+            description: 'Grembiule da cucina o servizio con stampa o ricamo, perfetto per ristoranti, catering, negozi alimentari.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/grembiule-personalizzato.jpg',
+            price: 'Da €8,00',
+            features: ['Diversi modelli (pettorina, vita, barista)', 'Tessuti resistenti', 'Tasche funzionali', 'Personalizzazione frontale', 'Lavabile ad alte temperature'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'abbigliamento-ecologico',
+            name: 'Abbigliamento Personalizzato Sostenibile',
+            description: 'Capi eco-friendly in cotone biologico o materiali riciclati, personalizzati con tecniche a basso impatto.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/abbigliamento-ecologico.jpg',
+            price: 'Da €12,00',
+            features: ['Materiali certificati (GOTS, OEKO-TEX)', 'Produzione sostenibile', 'Personalizzazione eco', 'Packaging ecologico', 'Brand image green'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'divise-personalizzate',
+            name: 'Divise Personalizzate',
+            description: 'Abbigliamento coordinato e professionale con logo aziendale per staff, negozi, hotel, aziende.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/divise-personalizzate.jpg',
+            price: 'Da €30,00',
+            features: ['Combinazione camicia, pantalone, giacca', 'Ricami o stampe di qualità', 'Personalizzazione per ogni ruolo', 'Look professionale e coerente', 'Lavaggio industriale compatibile'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'abbigliamento-sportivo',
+            name: 'Abbigliamento Sportivo Personalizzato',
+            description: 'Tute, magliette e pantaloncini tecnici personalizzati per team sportivi o eventi aziendali sportivi.',
+            category: 'immagine',
+            subcategory: 'abbigliamento personalizzato',
+            image: '/images/catalogo/products/abbigliamento-sportivo.jpg',
+            price: 'Da €20,00',
+            features: ['Tessuti traspiranti', 'Personalizzazione completa', 'Taglie junior/adult', 'Stampa resistente al sudore', 'Look professionale per team'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          }
+        ]
+      },
+      {
+        id: 'gadget-promozionali',
+        name: 'Gadget Promozionali',
+        description: 'Oggetti personalizzati di alta qualità per marketing, eventi e corporate gifts',
+        products: [
+          {
+            id: 'penne-personalizzate',
+            name: 'Penne Executive Personalizzate',
+            description: 'Penne a sfera di lusso in metallo con incisione laser precision. Eleganza e funzionalità per i tuoi clienti VIP.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/penne-personalizzate.jpg',
+            price: 'Da €4,50',
+            features: ['Metallo anodizzato', 'Incisione laser precision', 'Refill Parker compatibile', 'Astuccio gift incluso', 'Garanzia scrittura'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'power-bank',
+            name: 'Power Bank Wireless Premium',
+            description: 'Caricabatterie portatili con ricarica wireless e cavo integrato. Design minimale, massima funzionalità.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/power-bank.jpg',
+            price: 'Da €28,00',
+            features: ['Capacità 10.000mAh', 'Ricarica wireless 15W', 'USB-C PD 20W', 'Display LED digitale', 'Certificazioni CE/FCC'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            featured: true
+          },
+          {
+            id: 'borracce-termiche',
+            name: 'Borracce Termiche Steel',
+            description: 'Borracce in acciaio inox con isolamento sottovuoto. Mantiene la temperatura per 24h, design premium personalizzabile.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/borracce-termiche.jpg',
+            price: 'Da €22,00',
+            features: ['Acciaio inox 18/8', 'Isolamento 24h', 'Capacità 500ml/750ml', 'Tappo sport/classico', 'Incisione laser'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          // --- nuovi prodotti gadget promozionali ---
+          {
+            id: 'zaini-personalizzati',
+            name: 'Zaini Personalizzati',
+            description: 'Zaini in tessuto resistente con stampa o ricamo del logo aziendale. Ideali per eventi, scuole o welcome kit.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/zaini-personalizzati.jpg',
+            price: 'Da €14,00',
+            features: [
+              'Capienza 20-30L',
+              'Scomparto PC',
+              'Stampa o ricamo personalizzato',
+              'Colori assortiti',
+              'Modelli classici o sportivi'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'usb-personalizzate',
+            name: 'Chiavette USB Personalizzate',
+            description: 'USB brandizzate con memoria da 8GB a 64GB, perfette per promozione digitale o materiale informativo.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/usb-personalizzate.jpg',
+            price: 'Da €5,00',
+            features: [
+              'Memoria 8GB-64GB',
+              'Stampa logo su superficie',
+              'Modelli girevoli o in metallo',
+              'Velocità USB 3.0 disponibile',
+              'Packaging personalizzabile'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'tazze-personalizzate',
+            name: 'Tazze Personalizzate',
+            description: 'Mug in ceramica o metallo smaltato con stampa full-color. Ideali per omaggi o merchandising aziendale.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/tazze-personalizzate.jpg',
+            price: 'Da €6,00',
+            features: [
+              'Ceramica o metallo',
+              'Stampa fronte/retro',
+              'Lavabili in lavastoviglie',
+              'Confezione regalo opzionale',
+              'Colori interni personalizzabili'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'notebook-personalizzati',
+            name: 'Notebook Personalizzati',
+            description: 'Quaderni con copertina rigida e stampa o incisione del logo. Ideali per eventi, meeting o regali aziendali.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/notebook-personalizzati.jpg',
+            price: 'Da €4,50',
+            features: [
+              'Copertina rigida o flessibile',
+              'Carta avorio o riciclata',
+              'Stampa o incisione laser',
+              'Elastico e segnalibro inclusi',
+              'Formati A5 e A6'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'borse-personalizzate',
+            name: 'Borse in Cotone Personalizzate',
+            description: 'Shopper ecologiche personalizzate con stampa logo. Perfette per eventi, fiere e negozi.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/borse-personalizzate.jpg',
+            price: 'Da €2,50',
+            features: [
+              '100% cotone o juta',
+              'Stampa 1 o 2 lati',
+              'Formati standard o maxi',
+              'Colori naturali o vivaci',
+              'Manici corti o lunghi'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'ombrelli-personalizzati',
+            name: 'Ombrelli Personalizzati',
+            description: 'Ombrelli resistenti antivento con stampa logo. Ideali come gadget aziendali eleganti e funzionali.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/ombrelli-personalizzati.jpg',
+            price: 'Da €9,00',
+            features: [
+              'Apertura automatica',
+              'Struttura antivento',
+              'Manico ergonomico',
+              'Stampa su 1 o più spicchi',
+              'Custodia inclusa'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'penne-ecologiche',
+            name: 'Penne Ecologiche Personalizzate',
+            description: 'Penna in materiali riciclati o biodegradabili con stampa del logo. Ideale per aziende eco-friendly.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/penne-ecologiche.jpg',
+            price: 'Da €1,20',
+            features: [
+              'Materiale riciclato o PLA',
+              'Stampa 1 colore o full-color',
+              'Inchiostro nero o blu',
+              'Design sostenibile',
+              'Packaging in carta'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'porta-badge',
+            name: 'Porta Badge Personalizzati',
+            description: 'Porta badge rigidi o morbidi con lanyard personalizzato. Perfetti per eventi e ambienti corporate.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/porta-badge.jpg',
+            price: 'Da €2,00',
+            features: [
+              'Badge rigido o flessibile',
+              'Lanyard personalizzato',
+              'Accessori (clip, moschettone)',
+              'Colori personalizzabili',
+              'Stampa fronte-retro'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`
+          },
+          {
+            id: 'gadget-custom',
+            name: 'Gadget su Misura',
+            description: 'Ogni idea può diventare realtà. Diamo forma a qualsiasi tipo di gadget personalizzato partendo da zero: materiali, forme, funzioni.',
+            category: 'immagine',
+            subcategory: 'gadget-promozionali',
+            image: '/images/catalogo/products/gadget-custom.jpg',
+            price: 'Su preventivo',
+            features: [
+              'Prototipazione personalizzata',
+              'Ampia scelta di materiali',
+              'Stampa, incisione o packaging custom',
+              'Ideale per progetti unici',
+              'Supporto creativo e tecnico'
+            ],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.GIORGIA}`,
+            featured: true,
+            badge: 'Bestseller'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'industria',
+    name: 'Industria & Produzione',
+    description: 'Soluzioni tecniche avanzate e attrezzature specializzate per il settore industriale e manifatturiero',
+    image: '/images/hero-industria.jpg',
+    subcategories: [
+      {
+        id: 'protezione-industriale',
+        name: 'Protezione Industriale',
+        description: 'Dispositivi di protezione certificati per ambienti industriali complessi',
+        products: [
+          {
+            id: 'guanti-protezione',
+            name: 'Guanti Tecnici Multifunzione',
+            description: 'Guanti ad alta resistenza per manipolazione industriale. Protezione taglio livello 5, grip superiore in ogni condizione.',
+            category: 'industria',
+            subcategory: 'protezione-industriale',
+            image: '/images/catalogo/products/guanti-protezione.jpg',
+            price: 'Da €16,00',
+            features: ['Resistenza taglio EN388 5', 'Grip microtexture', 'Palmo rinforzato', 'Polsino elastico', 'Lavabili 30°C'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'scarpe-antinfortunistiche',
+            name: 'Calzature Antinfortunistiche S3',
+            description: 'Scarpe di sicurezza ultraleggere con puntale composito e suola antiperforazione. Comfort estremo per lunghe giornate.',
+            category: 'industria',
+            subcategory: 'protezione-industriale',
+            image: '/images/catalogo/products/scarpe-antinfortunistiche.jpg',
+            price: 'Da €85,00',
+            features: ['Puntale composito 200J', 'Suola antiperforazione', 'Tomaia in microfibra', 'Suola PU bidensità', 'Certificazione S3 SRC'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`,
+            featured: true
+          },
+          {
+            id: 'caschi-evoluti',
+            name: 'Caschi Smart Protection',
+            description: 'Elmetti di nuova generazione con sistema di ventilazione, visiera integrata e accessori modulari per ogni esigenza.',
+            category: 'industria',
+            subcategory: 'protezione-industriale',
+            image: '/images/catalogo/products/caschi-evoluti.jpg',
+            price: 'Da €45,00',
+            features: ['Sistema ventilazione', 'Visiera anti-UV', 'Casco modulare', 'Regolazione micrometrica', 'Sottogola 4 punti'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          }
+        ]
+      },
+      {
+        id: 'abbigliamento-tecnico',
+        name: 'Abbigliamento Tecnico',
+        description: 'Indumenti specializzati ad alte prestazioni per il lavoro industriale',
+        products: [
+          {
+            id: 'tute-lavoro',
+            name: 'Tute da Lavoro Professional',
+            description: 'Tute complete in tessuto ripstop rinforzato. Resistenti a strappi, macchie e usura estrema. Comfort garantito.',
+            category: 'industria',
+            subcategory: 'abbigliamento-tecnico',
+            image: '/images/catalogo/products/tute-lavoro.jpg',
+            price: 'Da €95,00',
+            features: ['Tessuto ripstop 280g/m²', 'Rinforzi articolazioni', '12 tasche funzionali', 'Zip YKK resistenti', 'Lavaggio industriale 90°C'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'giacche-alta-visibilita',
+            name: 'Giacche Alta Visibilità',
+            description: 'Giacche impermeabili ad alta visibilità classe 3. Perfette per cantieri, aeroporti e lavori stradali notturni.',
+            category: 'industria',
+            subcategory: 'abbigliamento-tecnico',
+            image: '/images/catalogo/products/giacche-alta-visibilita.jpg',
+            price: 'Da €68,00',
+            features: ['Classe 3 EN 20471', 'Tessuto impermeabile', 'Bande retroriflettenti 3M', 'Cappuccio removibile', 'Tasche multiple'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'pantaloni-cargo',
+            name: 'Pantaloni Cargo Rinforzati',
+            description: 'Pantaloni da lavoro con tasche cargo e rinforzi. Libertà di movimento e resistenza estrema per ogni mestiere.',
+            category: 'industria',
+            subcategory: 'abbigliamento-tecnico',
+            image: '/images/catalogo/products/pantaloni-cargo.jpg',
+            price: 'Da €55,00',
+            features: ['Tessuto stretch 4-way', 'Rinforzi ginocchia', '8 tasche funzionali', 'Passanti porta-utensili', 'Vestibilità ergonomica'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'sicurezza',
+    name: 'Sicurezza sul Lavoro',
+    description: 'Sistemi integrati di protezione e prevenzione per garantire la massima sicurezza in ogni ambiente lavorativo',
+    image: '/images/hero-sicurezza.jpg',
+    subcategories: [
+      {
+        id: 'scarpe-antinfortunistiche',
+        name: 'Scarpe U-Power Uomo',
+        description: 'Dispositivi di protezione individuale certificati per ogni rischio',
+        products: [
+          {
+            id: 'deon-esd',
+            name: 'U-power - Deon ESD',
+            description: 'Maschere filtranti di massima protezione con valvola di espirazione. Conformi alle normative più stringenti.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/deon-esd.jpg',
+            price: 'Da €113,00',
+            features: ['Colori: Verde, Giallo, Azzurro, Nero', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'brant-esd',
+            name: 'U-power - Brant ESD',
+            description: 'Imbracature complete per lavori in altezza. Sistema di distribuzione del peso e agganci certificati EN.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/brant-esd.jpg',
+            price: 'Da €124,60',
+            features: ['Colori: Arancione, Giallo, Verde, Nero, Grigio', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci oppure a strappi', 'Anche per uso alimentare'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`,
+            featured: true
+          },
+          {
+            id: 'irvin-s-esd',
+            name: 'U-power - Irvin ESD',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/irvin-s-esd.jpg',
+            price: 'Da €141,10',
+            features: ['Colori: Verde, Giallo, Arancione, Grigio', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'sinatra-s-esd',
+            name: 'U-power - Sinatra ESD',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/sinatra-s-esd.jpg',
+            price: 'Da €75,40',
+            features: ['Colori: Verde, Nero, Rosso, Grigio', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'ronan-s',
+            name: 'U-power - Ronan s',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/ronan-s.jpg',
+            price: 'Da €168,50',
+            features: ['ESDColori: giallo, nero', 'Tessuto: pelle', 'Scarpa: bassa, scarponcino', 'Con doppio laccio'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'canyon-uk-s-esd',
+            name: 'U-power - Canyon UK s ESD',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/canyon-uk-s-esd.jpg',
+            price: 'Da €104,70',
+            features: ['Colori: verde, nero, grigio, marrone', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci o strappi', 'Anche per uso alimentare'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'axel-s-esd',
+            name: 'U-power - Axel s ESD',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/axel-s-esd.jpg',
+            price: 'Da €127,80',
+            features: ['Colori: giallo, marrone, verde, arancione, nero, grigio, blu', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci o strappi', 'Anche per uso alimentare'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'lift-carpet-s-esd',
+            name: 'U-power - Lift Carpet s ESD',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/lift-carpet-s-esd.jpg',
+            price: 'Da €140,70',
+            features: ['Colori: grigio, blu, rosso, arancione , verde', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'avion-plus-s-esd',
+            name: 'U-power - Canyon UK s ESD',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/avion-plus-s-esd.jpg',
+            price: 'Da €119,00',
+            features: ['sColori: arancione, verde, rosso, grigio, blu, nero', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'spirit-s',
+            name: 'U-power - Spirit s',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/spirit-s.jpg',
+            price: 'Da €213,00',
+            features: ['Colori: arancione, giallo, nero,', 'Tessuto: Tela, Pelle', 'Scarpa: Scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'aerator-s-esd',
+            name: 'U-power - Aerator s ESD',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/aerator-s-esd.jpg',
+            price: 'Da €86,50',
+            features: ['Colori: marrone, giallo, verde, arancione, grigio, nero', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci o strappi', 'Anche per uso alimentare'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'senna-s',
+            name: 'U-power - Senna s',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/senna-s.jpg',
+            price: 'Da €91,80',
+            features: ['Colori:  verde, grigio, nero, rosso, bianco, marrone', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'trophy-s',
+            name: 'U-power - Trophy s',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/trophy-s.jpg',
+            price: 'Da €93,90',
+            features: ['Colori: nero, marrone, bianco, grigio, blu scuro', 'Tessuto: Tela, Pelle', 'Scarpa: Bassa, Scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'smash-gtx-s',
+            name: 'U-power - Smash gtx s',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/smash-gtx-s.jpg',
+            price: 'Da €156,80',
+            features: ['Colori: marrone, nero', 'Tessuto: pelle', 'Scarpa: scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'elect-s',
+            name: 'U-power - Elect s',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/elect-s.jpg',
+            price: 'Da €66,50',
+            features: ['Colori: nero, arancione, rosso, marrone', 'Tessuto: pelle', 'Scarpa: bassa, scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'tonic-grip-o',
+            name: 'U-power - Tonic GRIP o',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/tonic-grip-o.jpg',
+            price: 'Da €88,90',
+            features: ['Colori:  marrone, nero, grigio', 'Tessuto: pelle', 'Scarpa: bassa, scarponcino', 'Con lacci', 'Anche per uso alimentare'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'california-s',
+            name: 'U-power - California s',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/california-s.jpg',
+            price: 'Da €83,30',
+            features: ['Colori: grigio, nero, marrone', 'Tessuto: tela, pelle', 'Scarpa: bassa, scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'pitucon-l',
+            name: 'U-power - Pitucon l',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/pitucon-l.jpg',
+            price: 'Da €70,00',
+            features: ['Colori: nero, grigio, marrone, blu', 'Tessuto: pelle', 'Scarpa: bassa, scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'tudor-l',
+            name: 'U-power - Tudor l',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/tudor-l.jpg',
+            price: 'Da €54,80',
+            features: ['Colori: grigio, marrone, nero, blu', 'Tessuto: pelle', 'Scarpa: bassa, scarponcino', 'Con lacci'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'simple-l',
+            name: 'U-power - Simple l',
+            description: 'Cuffie e inserti auricolari per protezione dal rumore industriale. SNR fino a 37dB, comfort prolungato.',
+            category: 'sicurezza',
+            subcategory: 'scarpe-antinfortunistiche',
+            image: '/images/catalogo/sicurezza/scarpe-antinfortunistiche/simple-l.jpg',
+            price: 'Da €42,90',
+            features: ['Colori: nero', 'Tessuto: pelle', 'Scarpa: bassa, scarponcino', 'Con lacci', 'Anche per uso alimentare'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          }
+        ]
+      },
+      {
+        id: 'guanti-base',
+        name: 'Guanti',
+        description: 'Sistemi integrati per la prevenzione degli infortuni sul lavoro',
+        products: [
+          {
+            id: 'GL_A34_305',
+            name: 'GL_A34_305',
+            description: 'Cassette mediche complete secondo DM 388/03. Contenuto verificato, scadenzario digitale e servizio di rifornimento.',
+            category: 'sicurezza',
+            subcategory: 'guanti-base',
+            image: '/images/catalogo/products/GL_A34_305.jpg',
+            price: 'Da €65,00',
+            features: ['Conforme DM 388/03', 'Contenuto 3 gruppi', 'Scadenzario digitale', 'Servizio rifornimento', 'Montaggio incluso'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'segnaletica-sicurezza',
+            name: 'Segnaletica di Sicurezza',
+            description: 'Cartelli e pittogrammi di sicurezza conformi ISO 3864. Materiali resistenti per interno ed esterno.',
+            category: 'sicurezza',
+            subcategory: 'sistemi-antinfortunistica',
+            image: '/images/catalogo/products/segnaletica-sicurezza.jpg',
+            price: 'Da €8,00',
+            features: ['Conforme ISO 3864', 'Materiali UV resistenti', 'Adesivi/alluminio/PVC', 'Fotoluminescenti', 'Personalizzazione disponibile'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'docce-emergenza',
+            name: 'Docce e Lavaocchi Emergenza',
+            description: 'Sistemi di decontaminazione di emergenza per esposizione a sostanze chimiche. Installazione e manutenzione incluse.',
+            category: 'sicurezza',
+            subcategory: 'sistemi-antinfortunistica',
+            image: '/images/catalogo/products/docce-emergenza.jpg',
+            price: 'Da €450,00',
+            features: ['Conformi ANSI Z358.1', 'Attivazione immediata', 'Flusso 15 minuti', 'Materiali anticorrosivi', 'Manutenzione periodica'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'formazione',
+    name: 'Formazione Professionale',
+    description: 'Percorsi formativi innovativi e certificazioni per lo sviluppo delle competenze professionali e la crescita aziendale',
+    image: '/images/hero-formazione.jpg',
+    subcategories: [
+      {
+        id: 'e-learning',
+        name: 'E learning',
+        description: 'Formazione obbligatoria e specialistica per la sicurezza sui luoghi di lavoro',
+        products: [
+          {
+            id: 'corso-rspp',
+            name: 'Corso RSPP Completo',
+            description: 'Percorso formativo completo per Responsabili del Servizio di Prevenzione e Protezione. Moduli A-B-C con docenti qualificati.',
+            category: 'formazione',  
+            subcategory: 'corsi-sicurezza',
+            image: '/images/catalogo/products/corso-rspp.jpg',
+            price: 'Da €480,00',
+            features: ['Moduli A-B-C completi', 'Docenti certificati', 'Attestato riconosciuto', 'Modalità blended', 'Aggiornamenti quinquennali'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`,
+            featured: true
+          },
+          {
+            id: 'corso-primo-soccorso',
+            name: 'Primo Soccorso Aziendale',
+            description: 'Formazione per addetti al primo soccorso aziendale. Teoria e pratica su manichini con certificazione triennale.',
+            category: 'formazione',
+            subcategory: 'corsi-sicurezza',
+            image: '/images/catalogo/products/corso-primo-soccorso.jpg',
+            price: 'Da €150,00',
+            features: ['Corso 12/16 ore', 'Pratica su manichini', 'Attestato valido 3 anni', 'Gruppo A-B-C', 'Kit didattico incluso'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'corso-antincendio',
+            name: 'Antincendio e Evacuazione',
+            description: 'Formazione addetti antincendio per attività a rischio basso, medio e alto. Prove pratiche con estintori reali.',
+            category: 'formazione',
+            subcategory: 'corsi-sicurezza',
+            image: '/images/catalogo/products/corso-antincendio.jpg',
+            price: 'Da €120,00',
+            features: ['Rischio basso/medio/alto', 'Prove pratiche estintori', 'Campo prove dedicato', 'Attestato VVF', 'Aggiornamenti periodici'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          }
+        ]
+      },
+      {
+        id: 'e-learning',
+        name: 'Piattaforme E-learning',
+        description: 'Sistemi digitali avanzati per la formazione aziendale personalizzata',
+        products: [
+          {
+            id: 'piattaforma-lms',
+            name: 'Piattaforma LMS Aziendale',
+            description: 'Learning Management System completo per gestire tutti i percorsi formativi aziendali. Dashboard analytics avanzate.',
+            category: 'formazione',
+            subcategory: 'e-learning',
+            image: '/images/catalogo/products/piattaforma-lms.jpg',
+            price: 'Da €35,00/utente/mese',
+            features: ['Dashboard analytics', 'Contenuti personalizzabili', 'App mobile nativa', 'Integrazione HR', 'Support 24/7'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'corsi-digitali',
+            name: 'Biblioteca Corsi Digitali',
+            description: 'Oltre 500 corsi professionali in formato digitale: sicurezza, management, soft skills e competenze tecniche.',
+            category: 'formazione',
+            subcategory: 'e-learning',
+            image: '/images/catalogo/products/corsi-digitali.jpg',
+            price: 'Da €15,00/corso',
+            features: ['500+ corsi disponibili', 'Multilingua', 'Certificazioni incluse', 'Aggiornamenti continui', 'Accesso illimitato'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`
+          },
+          {
+            id: 'simulatori-vr',
+            name: 'Simulatori VR Training',
+            description: 'Simulazioni immersive in realtà virtuale per addestramento in sicurezza. Scenari realistici senza rischi.',
+            category: 'formazione',
+            subcategory: 'e-learning',
+            image: '/images/catalogo/products/simulatori-vr.jpg',
+            price: 'Da €200,00/sessione',
+            features: ['Tecnologia VR avanzata', 'Scenari personalizzabili', 'Tracking movimenti', 'Report dettagliati', 'Hardware incluso'],
+            referenti: `${REFERENTI.MIRCO}, ${REFERENTI.MIRCO}`,
+            badge: 'Bestseller'
+          }
+        ]
+      }
+    ]
+  }
+];
+
+/**
+ * Utilità per trovare elementi nel catalogo
+ */
+export const catalogUtils = {
+  /**
+   * Trova una categoria per ID
+   */
+  findCategory: (categoryId: string): Category | undefined => {
+    return catalogData.find(cat => cat.id === categoryId);
+  },
+
+  /**
+   * Trova una sottocategoria per ID all'interno di una categoria
+   */
+  findSubcategory: (categoryId: string, subcategoryId: string): Subcategory | undefined => {
+    const category = catalogUtils.findCategory(categoryId);
+    return category?.subcategories.find(sub => sub.id === subcategoryId);
+  },
+
+  /**
+   * Trova un prodotto per ID
+   */
+  findProduct: (productId: string): Product | undefined => {
+    for (const category of catalogData) {
+      for (const subcategory of category.subcategories) {
+        const product = subcategory.products.find(prod => prod.id === productId);
+        if (product) return product;
+      }
+    }
+    return undefined;
+  },
+
+  /**
+   * Conta il totale dei prodotti
+   */
+  getTotalProducts: (): number => {
+    return catalogData.reduce((total, category) => {
+      return total + category.subcategories.reduce((subTotal, subcategory) => {
+        return subTotal + subcategory.products.length;
+      }, 0);
+    }, 0);
+  },
+
+  /**
+   * Ottieni tutti i prodotti featured
+   */
+  getFeaturedProducts: (): Product[] => {
+    const featured: Product[] = [];
+    catalogData.forEach(category => {
+      category.subcategories.forEach(subcategory => {
+        subcategory.products.forEach(product => {
+          if (product.featured) featured.push(product);
+        });
+      });
+    });
+    return featured;
+  },
+
+  /**
+   * Ottieni tutti i prodotti con badge
+   */
+  getBadgedProducts: (): Product[] => {
+    const badged: Product[] = [];
+    catalogData.forEach(category => {
+      category.subcategories.forEach(subcategory => {
+        subcategory.products.forEach(product => {
+          if (product.badge) badged.push(product);
+        });
+      });
+    });
+    return badged;
+  }
+};

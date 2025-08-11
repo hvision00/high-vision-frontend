@@ -1,0 +1,18 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import AssistenzaPage from '@/components/Assistenza/AssistenzaPage.tsx';
+---
+
+<Layout title="Assistenza - Supporto Clienti">
+  <AssistenzaPage client:load />
+</Layout>
+
+<style is:global>
+  nav {
+    display: none !important;
+  }
+  
+  body {
+    background-color: #262626 !important;
+  }
+</style>

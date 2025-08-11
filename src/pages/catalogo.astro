@@ -1,0 +1,53 @@
+---
+// src/pages/catalogo.astro
+import Layout from '../layouts/Layout.astro';
+import { CleanCatalog } from '../components/Catalogo/CleanCatalog';
+import Footer from '../components/Footer/Footer.astro';
+---
+
+<Layout navbarTheme="dark" title="Catalogo Servizi - High Vision">
+  <CleanCatalog client:load />
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* Nasconde SOLO la navbar principale del sito, non la navigazione del catalogo */
+  .max-w-2xl.md\:max-w-3xl.lg\:max-w-4xl.xl\:max-w-7xl {
+    display: none !important;
+  }
+  
+  /* Oppure nasconde l'intero componente EnhancedNavbar */
+  nav.w-full.fixed.z-50 {
+    display: none !important;
+  }
+
+  /* Assicura scroll fluido */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Migliora la leggibilità */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Custom scrollbar per il catalogo */
+  .catalogo-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .catalogo-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  .catalogo-scroll::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+  }
+  
+  .catalogo-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+</style>

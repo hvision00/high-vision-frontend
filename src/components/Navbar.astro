@@ -1,0 +1,86 @@
+---
+// Navbar.astro
+import { EnhancedNavbar } from './EnhancedNavbar';
+import logoLight from '../assets/img/logo.png';
+
+export interface Props {
+  theme?: 'light' | 'dark';
+}
+
+const { theme = 'light' } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<EnhancedNavbar 
+  client:load 
+  theme={theme}
+  logoLight={logoLight.src}
+  currentPath={currentPath}
+/>
+
+<!-- Styles per le animazioni fluide -->
+<style is:global>
+  /* Transizioni fluide per tutti gli elementi */
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Animazione per il floating button */
+  @keyframes float-in {
+    from {
+      transform: translateY(-20px) scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Animazione per la navbar */
+  @keyframes slide-down {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Classi per backdrop blur con supporto cross-browser */
+  .backdrop-blur-menu-light {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .backdrop-blur-menu-dark {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  /* Backdrop blur support check */
+  @supports (backdrop-filter: blur(12px)) {
+    .backdrop-blur-md {
+      backdrop-filter: blur(12px);
+    }
+  }
+  
+  /* Fallback per browser che non supportano backdrop-filter */
+  @supports not (backdrop-filter: blur(12px)) {
+    .backdrop-blur-md {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .bg-white\/60.backdrop-blur-md {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .backdrop-blur-menu-light {
+      background-color: rgba(0, 0, 0, 0.85);
+    }
+    
+    .backdrop-blur-menu-dark {
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+  }
+</style>
